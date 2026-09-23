@@ -29,8 +29,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Install dependencies
-        run: npm install
+      - name: Clean and Install dependencies
+        run: |
+          rm -f package-lock.json
+          npm install --no-package-lock
 
       - name: Build with Next.js
         run: npx next build
