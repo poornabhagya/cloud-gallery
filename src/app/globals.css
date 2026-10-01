@@ -1,49 +1,66 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-gallery: #F4F0EA;
-  --color-surface-gallery: #EAE5DC;
-  --color-text-gallery: #2B2A27;
-  --color-muted-gallery: #7E7971;
-  --color-border-gallery: #E2DDD4;
-  --color-accent-gallery: #8C6D53;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #FAFAFA;
+  --color-text-primary: #000000;
+  --color-text-secondary: #555555;
+  --color-text-muted: #777777;
+  --color-border-hairline: #E5E5E5;
+  --color-border-subtle: #EEEEEE;
+  --color-accent-navy: #002B49;
+  --color-accent-charcoal: #222222;
 
-  --color-gallery-bg: #F4F0EA;
-  --color-gallery-surface: #EAE5DC;
-  --color-gallery-text: #2B2A27;
-  --color-gallery-muted: #7E7971;
-  --color-gallery-border: #E2DDD4;
-  --color-gallery-accent: #8C6D53;
-
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-serif: var(--font-playfair), "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {
-  --background: #F4F0EA;
-  --foreground: #2B2A27;
+  --background: #FFFFFF;
+  --foreground: #000000;
 }
 
 body {
-  background-color: #F4F0EA;
-  color: #2B2A27;
+  background-color: #FFFFFF;
+  color: #000000;
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom hairline borders */
-.border-gallery {
-  border-color: #E2DDD4;
+/* Sotheby's Hairline Grid Lines */
+.hairline-b {
+  border-bottom: 1px solid #E5E5E5;
+}
+.hairline-t {
+  border-top: 1px solid #E5E5E5;
+}
+.hairline-r {
+  border-right: 1px solid #E5E5E5;
+}
+.hairline-l {
+  border-left: 1px solid #E5E5E5;
+}
+.hairline {
+  border: 1px solid #E5E5E5;
 }
 
-/* Smooth editorial typography utilities */
+/* Elegant Typography Classes */
 .font-serif {
-  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-family: var(--font-playfair), "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
 }
 
 .font-sans {
   font-family: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Sotheby's all-caps label utility */
+.lot-label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 /* Minimalist scrollbar */
@@ -52,17 +69,26 @@ body {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4F0EA;
+  background: #FFFFFF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D5CEC2;
+  background: #D0D0D0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8C6D53;
+  background: #000000;
 }
 
-/* Editorial selection */
+/* Crisp selection */
 ::selection {
-  background-color: #8C6D53;
-  color: #F4F0EA;
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+/* Hide scrollbar for category tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

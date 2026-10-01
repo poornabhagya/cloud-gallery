@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { useGallery } from "@/context/GalleryContext";
 import { ARTWORKS_DATA, ARTISTS_DATA, EVENTS_DATA } from "@/data/mockData";
-import { X, Search, ArrowRight } from "lucide-react";
+import { X, Search, ArrowRight, Tag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -19,7 +19,8 @@ export default function SearchDrawer() {
         a.title.toLowerCase().includes(q) ||
         a.artist.toLowerCase().includes(q) ||
         a.medium.toLowerCase().includes(q) ||
-        a.category.toLowerCase().includes(q)
+        a.category.toLowerCase().includes(q) ||
+        (a.lotNumber && a.lotNumber.toLowerCase().includes(q))
     ).slice(0, 4);
   }, [query]);
 
@@ -48,48 +49,55 @@ export default function SearchDrawer() {
   if (!isSearchOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-start pt-16 sm:pt-24 px-4 animate-fade-in">
-      <div 
-        className="w-full max-w-3xl bg-[#F4F0EA] border border-[#E2DDD4] shadow-2xl p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto"
+    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex flex-col items-center justify-start pt-16 sm:pt-24 px-4 animate-fade-in">
+      <div
+        className="w-full max-w-3xl bg-white border border-[#E5E5E5] shadow-2xl p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={closeSearch}
           aria-label="Close search"
-          className="absolute top-6 right-6 p-2 text-[#7E7971] hover:text-[#2B2A27] transition-colors"
+          className="absolute top-6 right-6 p-2 text-[#666666] hover:text-black transition-colors"
         >
           <X size={20} strokeWidth={1.5} />
         </button>
 
-        <div className="flex items-center gap-3 border-b border-[#E2DDD4] pb-4">
-          <Search size={20} strokeWidth={1.5} className="text-[#8C6D53]" />
+        {/* Search Input */}
+        <div className="flex items-center gap-3 border-b-2 border-black pb-4">
+          <Search size={22} strokeWidth={1.7} className="text-black" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search sculptures, artists, materials, exhibitions..."
-            className="w-full bg-transparent text-lg sm:text-xl font-serif text-[#2B2A27] placeholder:text-[#7E7971]/60 focus:outline-none"
+            placeholder="Search lot number, artist, medium, department, or auction..."
+            className="w-full bg-transparent text-lg sm:text-xl font-serif text-black placeholder:text-[#999999] focus:outline-none"
           />
         </div>
 
         {query.trim() === "" ? (
-          <div className="py-12 text-center text-xs text-[#7E7971] space-y-3">
-            <p className="tracking-widest uppercase text-[11px] text-[#8C6D53]">
-              Popular Spatial Queries
+          <div className="py-12 text-center text-xs text-[#666666] space-y-4">
+            <p className="tracking-widest uppercase text-[11px] font-semibold text-black">
+              POPULAR AUCTION & CATALOGUE SEARCHES
             </p>
             <div className="flex flex-wrap justify-center gap-2 max-w-md mx-auto pt-2">
-              {["Monolith", "Travertine", "Kyoto Porcelain", "Lost Wax Bronze", "Engadin", "Henrik Vestergaard"].map(
-                (term) => (
-                  <button
-                    key={term}
-                    onClick={() => setQuery(term)}
-                    className="px-3 py-1 bg-[#EAE5DC] hover:bg-[#8C6D53] hover:text-[#F4F0EA] transition-colors border border-[#E2DDD4] text-[11px]"
-                  >
-                    {term}
-                  </button>
-                )
-              )}
+              {[
+                "Henrik Vestergaard",
+                "Swedish Diabase",
+                "Wood-fired porcelain",
+                "Lost wax bronze",
+                "Engadin Pavilion",
+                "LOT 01",
+                "Limestone Plinth",
+              ].map((term) => (
+                <button
+                  key={term}
+                  onClick={() => setQuery(term)}
+                  className="px-3.5 py-1.5 bg-[#FAFAFA] hover:bg-black hover:text-white transition-colors border border-[#E5E5E5] text-[11px] uppercase tracking-wider text-[#333333]"
+                >
+                  {term}
+                </button>
+              ))}
             </div>
           </div>
         ) : (
@@ -97,20 +105,20 @@ export default function SearchDrawer() {
             {/* Artworks */}
             {filteredArtworks.length > 0 && (
               <div>
-                <span className="text-[10px] tracking-[0.25em] uppercase text-[#8C6D53] font-medium block mb-3">
-                  ARTWORKS & OBJECTS ({filteredArtworks.length})
+                <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block mb-3 pb-1 border-b border-[#E5E5E5]">
+                  CATALOGUED LOTS & ARTWORKS ({filteredArtworks.length})
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {filteredArtworks.map((art) => (
                     <div
                       key={art.id}
-                      className="flex gap-3 p-2.5 bg-[#EAE5DC]/50 border border-[#E2DDD4] items-center hover:border-[#8C6D53] transition-colors group cursor-pointer"
+                      className="flex gap-3 p-3 bg-[#FAFAFA] border border-[#E5E5E5] items-center hover:border-black transition-colors group cursor-pointer"
                       onClick={() => {
                         closeSearch();
                         openEnquiry(art);
                       }}
                     >
-                      <div className="relative w-12 h-14 bg-stone-300 flex-shrink-0">
+                      <div className="relative w-14 h-16 bg-[#EEEEEE] flex-shrink-0 border border-[#E5E5E5]">
                         <Image
                           src={art.image}
                           alt={art.title}
@@ -120,11 +128,14 @@ export default function SearchDrawer() {
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-serif text-sm text-[#2B2A27] group-hover:text-[#8C6D53] transition-colors truncate">
+                        <span className="text-[9px] uppercase tracking-wider text-[#777777] block">
+                          {art.lotNumber || "LOT"} · {art.category}
+                        </span>
+                        <h4 className="font-serif text-sm text-black group-hover:underline truncate italic">
                           {art.title}
                         </h4>
-                        <p className="text-[11px] text-[#7E7971] truncate">
-                          {art.artist} · {art.price}
+                        <p className="text-[11px] text-[#555555] truncate">
+                          {art.artist} · <strong className="text-black">{art.price}</strong>
                         </p>
                       </div>
                     </div>
@@ -136,8 +147,8 @@ export default function SearchDrawer() {
             {/* Artists */}
             {filteredArtists.length > 0 && (
               <div>
-                <span className="text-[10px] tracking-[0.25em] uppercase text-[#8C6D53] font-medium block mb-3">
-                  ARTISTS & RESIDENTS ({filteredArtists.length})
+                <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block mb-3 pb-1 border-b border-[#E5E5E5]">
+                  ARTISTS & MASTERS ({filteredArtists.length})
                 </span>
                 <div className="space-y-2">
                   {filteredArtists.map((artist) => (
@@ -145,13 +156,15 @@ export default function SearchDrawer() {
                       key={artist.id}
                       href="/artists"
                       onClick={closeSearch}
-                      className="flex items-center justify-between p-2.5 bg-[#EAE5DC]/50 border border-[#E2DDD4] hover:border-[#8C6D53] transition-colors"
+                      className="flex items-center justify-between p-3 bg-[#FAFAFA] border border-[#E5E5E5] hover:border-black transition-colors"
                     >
                       <div>
-                        <p className="font-serif text-base text-[#2B2A27]">{artist.name}</p>
-                        <p className="text-[11px] text-[#7E7971]">{artist.discipline} · {artist.origin}</p>
+                        <p className="font-serif text-base text-black">{artist.name}</p>
+                        <p className="text-[11px] text-[#666666]">
+                          {artist.discipline} · {artist.origin}
+                        </p>
                       </div>
-                      <ArrowRight size={14} className="text-[#8C6D53]" />
+                      <ArrowRight size={14} className="text-black" />
                     </Link>
                   ))}
                 </div>
@@ -161,8 +174,8 @@ export default function SearchDrawer() {
             {/* Events */}
             {filteredEvents.length > 0 && (
               <div>
-                <span className="text-[10px] tracking-[0.25em] uppercase text-[#8C6D53] font-medium block mb-3">
-                  EXHIBITIONS & SALONS
+                <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block mb-3 pb-1 border-b border-[#E5E5E5]">
+                  AUCTIONS & SALONS
                 </span>
                 <div className="space-y-2">
                   {filteredEvents.map((ev) => (
@@ -170,13 +183,15 @@ export default function SearchDrawer() {
                       key={ev.id}
                       href="/events"
                       onClick={closeSearch}
-                      className="flex items-center justify-between p-2.5 bg-[#EAE5DC]/50 border border-[#E2DDD4] hover:border-[#8C6D53] transition-colors"
+                      className="flex items-center justify-between p-3 bg-[#FAFAFA] border border-[#E5E5E5] hover:border-black transition-colors"
                     >
                       <div>
-                        <p className="font-serif text-sm text-[#2B2A27]">{ev.title}</p>
-                        <p className="text-[11px] text-[#7E7971]">{ev.date} · {ev.location}</p>
+                        <p className="font-serif text-sm text-black">{ev.title}</p>
+                        <p className="text-[11px] text-[#666666]">
+                          {ev.date} · {ev.location}
+                        </p>
                       </div>
-                      <span className="text-[10px] uppercase tracking-wider text-[#8C6D53]">
+                      <span className="text-[10px] uppercase tracking-wider font-semibold text-black bg-white px-2 py-1 border border-[#E5E5E5]">
                         {ev.type}
                       </span>
                     </Link>
@@ -188,8 +203,8 @@ export default function SearchDrawer() {
             {filteredArtworks.length === 0 &&
               filteredArtists.length === 0 &&
               filteredEvents.length === 0 && (
-                <div className="py-8 text-center text-xs text-[#7E7971]">
-                  No matching artworks, artists, or salons found for &ldquo;{query}&rdquo;.
+                <div className="py-12 text-center text-xs text-[#666666]">
+                  No matching lots, artists, or auction events found for &ldquo;{query}&rdquo;.
                 </div>
               )}
           </div>

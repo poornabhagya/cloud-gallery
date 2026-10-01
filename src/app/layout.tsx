@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { GalleryProvider } from "@/context/GalleryContext";
 import Navbar from "@/components/Navbar";
@@ -9,10 +9,10 @@ import RSVPModal from "@/components/RSVPModal";
 import VideoLightboxModal from "@/components/VideoLightboxModal";
 import SearchDrawer from "@/components/SearchDrawer";
 
-const cormorant = Cormorant_Garamond({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-cormorant",
-  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -20,26 +20,26 @@ const cormorant = Cormorant_Garamond({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "CLOUD GALLERY | Architectural Art & Creative Studio Portfolio",
+  title: "CLOUD GALLERY | High-End Fine Art, Monoliths & Private Sales",
   description:
-    "An ultra-minimalist, high-end architectural art gallery and creative studio portfolio. Spatial design, monolithic sculpture, raw materiality, and tactile luxury.",
+    "A premier luxury auction house & fine art gallery. Specializing in monumental stone sculpture, wood-fired porcelain, mineral paintings, and exclusive architectural commissions.",
   keywords: [
-    "Architectural Gallery",
-    "Monolith Sculpture",
-    "Norm Architects aesthetic",
-    "Hauser & Wirth",
-    "Travertine Furniture",
-    "Ceramic vessels",
-    "Contemporary art portfolio",
+    "Sotheby's style art gallery",
+    "Fine Art Auctions",
+    "Monolithic stone sculpture",
+    "Private art sales",
+    "Contemporary masterworks",
+    "Architectural art",
+    "Zurich Kyoto Copenhagen art salon",
   ],
   openGraph: {
-    title: "CLOUD GALLERY | Architectural Art & Creative Studio",
-    description: "Where spatial design, raw materiality, and contemporary form converge.",
+    title: "CLOUD GALLERY | Fine Art, Sculpture & Private Sales",
+    description: "Curating rare masterworks, monolithic sculptures, and high-value architectural acquisitions.",
     type: "website",
   },
 };
@@ -53,15 +53,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${inter.variable} antialiased`}
+      className={`${playfair.variable} ${inter.variable} antialiased`}
     >
       <body
         suppressHydrationWarning
-        className="min-h-screen flex flex-col bg-[#F4F0EA] text-[#2B2A27] font-sans selection:bg-[#8C6D53] selection:text-[#F4F0EA]"
+        className="min-h-screen flex flex-col bg-white text-black font-sans selection:bg-black selection:text-white"
       >
         <GalleryProvider>
           <Navbar />
-          <main className="flex-1 w-full">{children}</main>
+          <main className="flex-1 w-full bg-white">{children}</main>
           <Footer />
           <EnquiryModal />
           <RSVPModal />

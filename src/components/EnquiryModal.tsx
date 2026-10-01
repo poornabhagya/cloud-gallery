@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useGallery } from "@/context/GalleryContext";
-import { X, Check } from "lucide-react";
+import { X, Check, ShieldCheck, Mail, Phone, Building } from "lucide-react";
 import Image from "next/image";
 
 export default function EnquiryModal() {
@@ -12,13 +12,14 @@ export default function EnquiryModal() {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [collectorType, setCollectorType] = useState("Private Collector");
+  const [enquiryType, setEnquiryType] = useState<"Acquisition" | "Private Sale" | "Consignment" | "Condition Report">("Acquisition");
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (selectedArtwork) {
-      setMessage(`I am enquiring regarding the availability, provenance, and acquisition details of "${selectedArtwork.title}" (${selectedArtwork.year}) by ${selectedArtwork.artist}.`);
+      setMessage(`I am enquiring regarding ${selectedArtwork.lotNumber || "Lot"} - "${selectedArtwork.title}" (${selectedArtwork.year}) by ${selectedArtwork.artist}. Please provide full provenance details, high-resolution condition reports, and acquisition instructions.`);
     } else {
-      setMessage("I would like to enquire with Cloud Gallery regarding acquisitions and private viewings.");
+      setMessage("I would like to enquire with Cloud Gallery regarding private acquisitions, valuations, and private salon viewings.");
     }
     setSubmitted(false);
   }, [selectedArtwork, isEnquiryOpen]);
@@ -37,46 +38,46 @@ export default function EnquiryModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div 
-        className="relative w-full max-w-2xl bg-[#F4F0EA] border border-[#E2DDD4] shadow-2xl p-6 sm:p-10 max-h-[90vh] overflow-y-auto"
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-xs animate-fade-in">
+      <div
+        className="relative w-full max-w-2xl bg-white border border-[#E5E5E5] shadow-2xl p-6 sm:p-10 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={closeEnquiry}
           aria-label="Close modal"
-          className="absolute top-6 right-6 p-2 text-[#7E7971] hover:text-[#2B2A27] transition-colors"
+          className="absolute top-6 right-6 p-2 text-[#666666] hover:text-black transition-colors"
         >
           <X size={20} strokeWidth={1.5} />
         </button>
 
         {submitted ? (
           <div className="py-16 text-center space-y-4">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#8C6D53]/10 border border-[#8C6D53]/30 flex items-center justify-center text-[#8C6D53]">
-              <Check size={20} strokeWidth={2} />
+            <div className="w-14 h-14 mx-auto rounded-full bg-black text-white flex items-center justify-center">
+              <Check size={24} strokeWidth={2} />
             </div>
-            <h3 className="font-serif text-3xl text-[#2B2A27]">Enquiry Received</h3>
-            <p className="text-sm text-[#7E7971] max-w-md mx-auto leading-relaxed">
-              Thank you, {name || "esteemed collector"}. A gallery director from our Zurich or Copenhagen salon will contact you within 24 hours with confidential details.
+            <h3 className="font-serif text-3xl text-black">Private Enquiry Received</h3>
+            <p className="text-xs text-[#555555] max-w-md mx-auto leading-relaxed">
+              Thank you, {name || "Collector"}. A Senior Specialist from our Private Sales Liaison Office in Zurich will contact you directly within 24 hours.
             </p>
           </div>
         ) : (
           <div>
-            <div className="border-b border-[#E2DDD4] pb-6 mb-6">
-              <span className="text-[11px] tracking-[0.25em] uppercase text-[#8C6D53] font-medium block mb-2">
-                ACQUISITION & CONCIERGE
+            <div className="border-b border-[#E5E5E5] pb-5 mb-6">
+              <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block mb-1">
+                SOTHEBY&apos;S STYLE PRIVATE SALES DESK
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl text-[#2B2A27]">
-                Private Artwork Enquiry
+              <h2 className="font-serif text-2xl sm:text-3xl text-black">
+                Artwork Acquisition & Enquiry
               </h2>
-              <p className="text-xs text-[#7E7971] mt-1 font-light tracking-wide">
-                Direct curatorial liaison for institutional and private collections.
+              <p className="text-xs text-[#666666] mt-1 font-light">
+                Direct curatorial liaison for institutional collections, architects, and private patrons.
               </p>
             </div>
 
             {selectedArtwork && (
-              <div className="flex items-center gap-4 p-4 bg-[#EAE5DC]/60 border border-[#E2DDD4] mb-6">
-                <div className="relative w-16 h-20 bg-stone-300 flex-shrink-0 overflow-hidden">
+              <div className="flex items-center gap-4 p-4 bg-[#FAFAFA] border border-[#E5E5E5] mb-6">
+                <div className="relative w-16 h-20 bg-[#EEEEEE] flex-shrink-0 overflow-hidden border border-[#E5E5E5]">
                   <Image
                     src={selectedArtwork.image}
                     alt={selectedArtwork.title}
@@ -86,14 +87,17 @@ export default function EnquiryModal() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-serif text-base italic text-[#2B2A27] truncate">
+                  <span className="text-[9px] uppercase tracking-widest text-[#666666] block">
+                    {selectedArtwork.lotNumber || "CATALOGUED LOT"} · {selectedArtwork.category}
+                  </span>
+                  <h4 className="font-serif text-lg text-black truncate italic">
                     {selectedArtwork.title}
                   </h4>
-                  <p className="text-xs text-[#7E7971] tracking-wider uppercase mt-0.5">
+                  <p className="text-xs text-[#555555] tracking-wider uppercase mt-0.5">
                     {selectedArtwork.artist} · {selectedArtwork.year}
                   </p>
-                  <p className="text-xs text-[#8C6D53] font-medium mt-1">
-                    {selectedArtwork.price}
+                  <p className="text-xs font-semibold text-black mt-1">
+                    Price / Valuation: {selectedArtwork.price}
                   </p>
                 </div>
               </div>
@@ -102,7 +106,7 @@ export default function EnquiryModal() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#7E7971] mb-1.5 font-medium">
+                  <label className="block text-[10px] uppercase tracking-wider text-[#555555] mb-1.5 font-medium">
                     Full Name *
                   </label>
                   <input
@@ -110,12 +114,12 @@ export default function EnquiryModal() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Eleanor Vance"
-                    className="w-full bg-[#EAE5DC]/40 border border-[#E2DDD4] px-3.5 py-2.5 text-sm text-[#2B2A27] placeholder:text-[#7E7971]/50 focus:outline-none focus:border-[#8C6D53] transition-colors"
+                    placeholder="e.g. Lord Eleanor Vance"
+                    className="w-full bg-white border border-[#CCCCCC] px-3.5 py-2.5 text-xs text-black placeholder:text-[#999999] focus:outline-none focus:border-black transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#7E7971] mb-1.5 font-medium">
+                  <label className="block text-[10px] uppercase tracking-wider text-[#555555] mb-1.5 font-medium">
                     Email Address *
                   </label>
                   <input
@@ -123,33 +127,33 @@ export default function EnquiryModal() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. eleanor@vance-studio.com"
-                    className="w-full bg-[#EAE5DC]/40 border border-[#E2DDD4] px-3.5 py-2.5 text-sm text-[#2B2A27] placeholder:text-[#7E7971]/50 focus:outline-none focus:border-[#8C6D53] transition-colors"
+                    placeholder="e.g. collector@vance-holdings.ch"
+                    className="w-full bg-white border border-[#CCCCCC] px-3.5 py-2.5 text-xs text-black placeholder:text-[#999999] focus:outline-none focus:border-black transition-colors"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#7E7971] mb-1.5 font-medium">
-                    Phone / WhatsApp
+                  <label className="block text-[10px] uppercase tracking-wider text-[#555555] mb-1.5 font-medium">
+                    Phone / WhatsApp (Optional)
                   </label>
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+41 ..."
-                    className="w-full bg-[#EAE5DC]/40 border border-[#E2DDD4] px-3.5 py-2.5 text-sm text-[#2B2A27] placeholder:text-[#7E7971]/50 focus:outline-none focus:border-[#8C6D53] transition-colors"
+                    placeholder="+41 44 ..."
+                    className="w-full bg-white border border-[#CCCCCC] px-3.5 py-2.5 text-xs text-black placeholder:text-[#999999] focus:outline-none focus:border-black transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#7E7971] mb-1.5 font-medium">
+                  <label className="block text-[10px] uppercase tracking-wider text-[#555555] mb-1.5 font-medium">
                     Collector Profile
                   </label>
                   <select
                     value={collectorType}
                     onChange={(e) => setCollectorType(e.target.value)}
-                    className="w-full bg-[#EAE5DC]/40 border border-[#E2DDD4] px-3 py-2.5 text-sm text-[#2B2A27] focus:outline-none focus:border-[#8C6D53] transition-colors"
+                    className="w-full bg-white border border-[#CCCCCC] px-3 py-2.5 text-xs text-black focus:outline-none focus:border-black transition-colors"
                   >
                     <option value="Private Collector">Private Collector</option>
                     <option value="Architectural Studio">Architectural / Interior Studio</option>
@@ -160,26 +164,27 @@ export default function EnquiryModal() {
               </div>
 
               <div>
-                <label className="block text-[11px] uppercase tracking-wider text-[#7E7971] mb-1.5 font-medium">
-                  Message & Spatial Context
+                <label className="block text-[10px] uppercase tracking-wider text-[#555555] mb-1.5 font-medium">
+                  Enquiry Specifics & Instructions
                 </label>
                 <textarea
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-[#EAE5DC]/40 border border-[#E2DDD4] p-3 text-sm text-[#2B2A27] focus:outline-none focus:border-[#8C6D53] transition-colors resize-none"
+                  className="w-full bg-white border border-[#CCCCCC] p-3 text-xs text-black focus:outline-none focus:border-black transition-colors resize-none leading-relaxed"
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-between">
-                <p className="text-[11px] text-[#7E7971]">
-                  Discreet handling. No public register.
-                </p>
+              <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-[#E5E5E5]">
+                <div className="flex items-center gap-1.5 text-[10px] text-[#666666]">
+                  <ShieldCheck size={13} className="text-black" />
+                  <span>Strictly confidential. No public registry.</span>
+                </div>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-[#2B2A27] hover:bg-[#8C6D53] text-[#F4F0EA] text-xs uppercase tracking-widest font-medium transition-colors"
+                  className="w-full sm:w-auto px-7 py-3 bg-black hover:bg-[#222222] text-white text-xs uppercase tracking-widest font-medium transition-colors"
                 >
-                  Submit Enquiry
+                  Submit Private Enquiry
                 </button>
               </div>
             </form>
