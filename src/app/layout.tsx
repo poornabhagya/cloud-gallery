@@ -66,11 +66,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
+      suppressHydrationWarning={true}
       className={`${merriweather.variable} ${roboto.variable} ${playfair.variable} ${inter.variable} antialiased`}
     >
       <body
-        suppressHydrationWarning
+        suppressHydrationWarning={true}
         className="min-h-screen flex flex-col bg-white text-black font-body font-light selection:bg-black selection:text-white"
       >
         <GalleryProvider>

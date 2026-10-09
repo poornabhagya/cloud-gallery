@@ -46,10 +46,15 @@ export default function Navbar() {
     };
   }, [activeDropdown]);
 
-  // Close dropdown whenever pathname changes
+  // Close dropdown whenever pathname changes safely without cascading render
   useEffect(() => {
-    setActiveDropdown(null);
-  }, [pathname]);
+    if (activeDropdown !== null) {
+      const timeoutId = setTimeout(() => {
+        setActiveDropdown(null);
+      }, 0);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [pathname, activeDropdown]);
 
   const toggleShopCategory = (catId: string) => {
     setExpandedShopCategories((prev) => ({
