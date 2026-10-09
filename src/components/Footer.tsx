@@ -2,15 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   const navLinks = [
-    { href: "/gallery", label: "Gallery" },
-    { href: "/journey", label: "Journey" },
+    { href: "/projects", label: "Projects" },
+    { href: "/shop", label: "Shop" },
     { href: "/artists", label: "Artists" },
     { href: "/collaborations", label: "Collaborations" },
     { href: "/events", label: "Events" },
+    { href: "/journey", label: "Journey" },
     { href: "/cloud-tv", label: "Cloud TV" },
     { href: "/open-call", label: "Open Call" },
   ];
@@ -25,20 +26,20 @@ export default function Footer() {
           ======================================================== */}
           <div className="md:col-span-5 space-y-4">
             <div className="space-y-1.5">
-              <span className="font-serif tracking-[0.22em] text-2xl sm:text-3xl font-normal text-black block leading-none">
+              <span className="font-roboto font-bold tracking-[0.22em] text-2xl sm:text-3xl text-black block leading-none">
                 CLOUD GALLERY
               </span>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-[#666666]">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#081757] font-semibold">
                 FINE ART, MONOLITHS & PRIVATE SALES · EST. 2018
               </p>
             </div>
 
-            <p className="text-xs text-[#555555] max-w-sm leading-relaxed font-light">
+            <p className="text-xs text-black max-w-sm leading-relaxed font-merriweather font-light">
               Dedicated to monumental stone sculpture, wood-fired porcelain vessels, mineral paintings, and high-value architectural acquisitions.
             </p>
 
-            <div className="pt-2 text-[11px] text-[#777777] font-light">
-              Curated across permanent atelier spaces in Zurich and Kyoto.
+            <div className="pt-2 text-[11px] text-black font-merriweather font-light">
+              Curated across permanent atelier spaces in Zurich, Copenhagen, and Kyoto.
             </div>
           </div>
 
@@ -46,15 +47,15 @@ export default function Footer() {
               COLUMN 2: COLLECTION & PLATFORM (QUICK LINKS)
           ======================================================== */}
           <div className="md:col-span-3 space-y-4">
-            <span className="text-[11px] uppercase tracking-[0.22em] text-black font-semibold block pb-1 border-b border-[#E5E5E5]">
+            <span className="font-roboto font-bold text-[11px] uppercase tracking-[0.22em] text-[#081757] block pb-2 border-b border-black">
               COLLECTION & PLATFORM
             </span>
-            <ul className="space-y-2.5 text-xs text-[#555555]">
+            <ul className="space-y-2 text-xs font-merriweather font-light">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="hover:text-black hover:underline transition-colors block"
+                    className="text-black hover:text-[#081757] transition-colors block py-0.5 tracking-wide"
                   >
                     {link.label}
                   </Link>
@@ -66,46 +67,46 @@ export default function Footer() {
           {/* ========================================================
               COLUMN 3: CONTACT DETAILS & LOCATION
           ======================================================== */}
-          <div className="md:col-span-4 space-y-4 text-xs text-[#555555]">
-            <span className="text-[11px] uppercase tracking-[0.22em] text-black font-semibold block pb-1 border-b border-[#E5E5E5]">
+          <div className="md:col-span-4 space-y-4 text-xs">
+            <span className="font-roboto font-bold text-[11px] uppercase tracking-[0.22em] text-[#081757] block pb-2 border-b border-black">
               CONTACT & LOCATION
             </span>
 
             {/* Location */}
             <div className="space-y-1">
-              <p className="font-serif text-black text-sm">Main Gallery Cloister</p>
-              <p className="text-[11px] text-[#666666] leading-relaxed">
+              <p className="font-roboto font-bold text-black text-sm">Main Gallery Cloister</p>
+              <p className="text-[11px] text-black font-merriweather font-light leading-relaxed">
                 Rämistrasse 44, 8001 Zürich, Switzerland
               </p>
             </div>
 
             {/* Email & Phone */}
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2 pt-1 font-merriweather font-light">
               <p className="flex items-center gap-2">
-                <Mail size={13} className="text-black flex-shrink-0" />
-                <a href="mailto:contact@cloudgallery.art" className="text-black hover:underline font-medium">
+                <Mail size={13} className="text-[#081757] flex-shrink-0" />
+                <a href="mailto:contact@cloudgallery.art" className="text-black hover:text-[#081757] hover:underline">
                   contact@cloudgallery.art
                 </a>
               </p>
               <p className="flex items-center gap-2">
-                <Phone size={13} className="text-black flex-shrink-0" />
-                <a href="tel:+41442108800" className="text-black hover:underline font-medium">
+                <Phone size={13} className="text-[#081757] flex-shrink-0" />
+                <a href="tel:+41442108800" className="text-black hover:text-[#081757] hover:underline">
                   +41 44 210 88 00
                 </a>
               </p>
             </div>
 
             {/* Social Media Links */}
-            <div className="pt-2">
-              <span className="text-[10px] uppercase tracking-wider text-[#777777] block mb-1.5 font-medium">
+            <div className="pt-2 font-merriweather font-light">
+              <span className="text-[10px] uppercase tracking-wider text-[#081757] font-bold block mb-1.5">
                 Social Channels
               </span>
-              <div className="flex items-center space-x-4 text-[11px] text-black font-medium">
+              <div className="flex items-center space-x-4 text-[11px] text-black">
                 <a
                   href="https://instagram.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:underline"
+                  className="hover:text-[#081757] hover:underline"
                 >
                   Instagram
                 </a>
@@ -114,7 +115,7 @@ export default function Footer() {
                   href="https://vimeo.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:underline"
+                  className="hover:text-[#081757] hover:underline"
                 >
                   Vimeo
                 </a>
@@ -123,7 +124,7 @@ export default function Footer() {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:underline"
+                  className="hover:text-[#081757] hover:underline"
                 >
                   YouTube
                 </a>
@@ -135,19 +136,19 @@ export default function Footer() {
         {/* ========================================================
             BOTTOM BAR: COPYRIGHT & POLICIES
         ======================================================== */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#666666]">
-          <p className="text-[11px] tracking-wider">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-black">
+          <p className="text-[11px] tracking-wider font-merriweather font-light">
             © {new Date().getFullYear()} CLOUD GALLERY INTERNATIONAL AUCTION HOUSE & STUDIO. ALL RIGHTS RESERVED.
           </p>
 
-          <div className="flex items-center space-x-6 text-[10px] tracking-widest uppercase font-medium">
-            <Link href="/gallery" className="hover:text-black transition-colors">
+          <div className="flex items-center space-x-6 text-[10px] tracking-widest uppercase font-merriweather font-light">
+            <Link href="/shop" className="text-black hover:text-[#081757] transition-colors">
               Catalogue Index
             </Link>
-            <Link href="/open-call" className="hover:text-black transition-colors">
+            <Link href="/open-call" className="text-black hover:text-[#081757] transition-colors">
               Consignment Terms
             </Link>
-            <Link href="/events" className="hover:text-black transition-colors">
+            <Link href="/events" className="text-black hover:text-[#081757] transition-colors">
               Press & Inquiries
             </Link>
           </div>

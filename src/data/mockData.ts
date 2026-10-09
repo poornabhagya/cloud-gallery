@@ -96,7 +96,12 @@ export interface CloudVideo {
     | "Behind the Work"
     | "Discussions"
     | "Project Videos"
-    | "Cloud Stories";
+    | "Cloud Stories"
+    | "Interviews"
+    | "Event Videos"
+    | "Behind the Scenes"
+    | "Short Videos"
+    | (string & {});
   duration: string;
   thumbnail: string;
   videoUrl: string;

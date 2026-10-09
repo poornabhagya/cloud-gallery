@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Roboto, Merriweather, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { GalleryProvider } from "@/context/GalleryContext";
 import Navbar from "@/components/Navbar";
@@ -8,6 +8,20 @@ import EnquiryModal from "@/components/EnquiryModal";
 import RSVPModal from "@/components/RSVPModal";
 import VideoLightboxModal from "@/components/VideoLightboxModal";
 import SearchDrawer from "@/components/SearchDrawer";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: ["300", "400", "500", "700", "900"],
+  display: "swap",
+});
+
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  variable: "--font-merriweather",
+  weight: ["300", "400", "700"],
+  display: "swap",
+});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -53,11 +67,11 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${playfair.variable} ${inter.variable} antialiased`}
+      className={`${merriweather.variable} ${roboto.variable} ${playfair.variable} ${inter.variable} antialiased`}
     >
       <body
         suppressHydrationWarning
-        className="min-h-screen flex flex-col bg-white text-black font-sans selection:bg-black selection:text-white"
+        className="min-h-screen flex flex-col bg-white text-black font-body font-light selection:bg-black selection:text-white"
       >
         <GalleryProvider>
           <Navbar />

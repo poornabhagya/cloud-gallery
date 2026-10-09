@@ -1,18 +1,29 @@
 @import "tailwindcss";
 
 @theme {
+  --color-royal-blue: #081757;
+  --color-brand-blue: #081757;
+  --color-brand-white: #FFFFFF;
+  --color-brand-black: #000000;
   --color-bg-primary: #FFFFFF;
   --color-bg-secondary: #FAFAFA;
   --color-text-primary: #000000;
-  --color-text-secondary: #555555;
-  --color-text-muted: #777777;
+  --color-text-secondary: #000000;
+  --color-text-muted: #555555;
   --color-border-hairline: #E5E5E5;
   --color-border-subtle: #EEEEEE;
-  --color-accent-navy: #002B49;
-  --color-accent-charcoal: #222222;
+  --color-border-primary: #000000;
+  --color-accent-navy: #081757;
+  --color-accent-charcoal: #000000;
 
-  --font-serif: var(--font-playfair), "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Typography System: Headers = Roboto Bold, Everything Else = Merriweather Light */
+  --font-roboto: var(--font-roboto), "Roboto", sans-serif;
+  --font-heading: var(--font-roboto), "Roboto", sans-serif;
+  --font-serif: var(--font-roboto), "Roboto", sans-serif;
+
+  --font-merriweather: var(--font-merriweather), "Merriweather", Georgia, serif;
+  --font-body: var(--font-merriweather), "Merriweather", Georgia, serif;
+  --font-sans: var(--font-merriweather), "Merriweather", Georgia, serif;
 }
 
 :root {
@@ -20,12 +31,119 @@
   --foreground: #000000;
 }
 
+/* ========================================================
+   GLOBAL BRAND TYPOGRAPHY & COLOR SYSTEM
+   1. Colors:
+      - Default Document & Page Background: White (#FFFFFF)
+      - Major Section Headings, Titles & Active Accents: Royal Blue (#081757)
+      - General Body Text, Paragraphs, Descriptions, Links: Black (#000000)
+      - White text ONLY where explicitly styled over dark/black sections or image overlays
+   2. Typography:
+      - Headers (h1-h6): Roboto Bold (700)
+      - Everything Else: Merriweather Light (300)
+======================================================== */
+
+html,
 body {
-  background-color: #FFFFFF;
-  color: #000000;
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  font-family: var(--font-merriweather), "Merriweather", Georgia, serif;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------
+   1. HEADINGS: Roboto Bold (700) + Royal Blue (#081757)
+      Over dark sections (.text-white), text stays White (#FFFFFF).
+-------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading,
+.section-heading {
+  font-family: var(--font-roboto), "Roboto", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+h1:not(.text-white):not([class*="text-white"]),
+h2:not(.text-white):not([class*="text-white"]),
+h3:not(.text-white):not([class*="text-white"]),
+h4:not(.text-white):not([class*="text-white"]),
+h5:not(.text-white):not([class*="text-white"]),
+h6:not(.text-white):not([class*="text-white"]),
+.font-heading:not(.text-white):not([class*="text-white"]),
+.section-heading:not(.text-white):not([class*="text-white"]) {
+  color: #081757 !important;
+}
+
+/* --------------------------------------------------------
+   2. BODY TEXT, PARAGRAPHS, DESCRIPTIONS & NAVIGATION:
+      Black (#000000) + Merriweather Light (300)
+-------------------------------------------------------- */
+body,
+p,
+span,
+a,
+li,
+label,
+dd,
+dt,
+blockquote,
+input,
+textarea,
+select,
+.font-merriweather,
+.font-body {
+  font-family: var(--font-merriweather), "Merriweather", Georgia, serif;
+}
+
+p:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not([class*="text-blue"]) {
+  color: #000000 !important;
+  font-weight: 300;
+}
+
+/* Navigation items default to Black */
+nav a:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not([class*="text-blue"]),
+nav button:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not([class*="text-blue"]) {
+  color: #000000;
+}
+
+/* --------------------------------------------------------
+   3. WHITE TEXT ONLY OVER INTENTIONAL DARK / BLACK BLOCKS
+      OR IMAGE OVERLAYS
+-------------------------------------------------------- */
+.text-white,
+h1.text-white,
+h2.text-white,
+h3.text-white,
+h4.text-white,
+p.text-white,
+span.text-white,
+a.text-white {
+  color: #FFFFFF !important;
+}
+
+/* --------------------------------------------------------
+   4. UTILITY OVERRIDES & SOTHEBY'S HAIRLINES
+-------------------------------------------------------- */
+.font-roboto {
+  font-family: var(--font-roboto), "Roboto", sans-serif !important;
+}
+
+.font-merriweather,
+.font-body,
+.font-sans {
+  font-family: var(--font-merriweather), "Merriweather", Georgia, serif !important;
+}
+
+/* Legacy font-serif aliases to Roboto Bold for consistent headers */
+.font-serif {
+  font-family: var(--font-roboto), "Roboto", sans-serif !important;
+  font-weight: 700 !important;
 }
 
 /* Sotheby's Hairline Grid Lines */
@@ -45,22 +163,14 @@ body {
   border: 1px solid #E5E5E5;
 }
 
-/* Elegant Typography Classes */
-.font-serif {
-  font-family: var(--font-playfair), "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
-}
-
-.font-sans {
-  font-family: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-/* Sotheby's all-caps label utility */
+/* Sotheby's all-caps label / metadata utility */
 .lot-label {
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-merriweather), Georgia, serif;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 300;
+  color: #000000;
 }
 
 /* Minimalist scrollbar */

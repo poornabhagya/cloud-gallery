@@ -1,460 +1,484 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { JOURNEY_TIMELINE, JourneyMilestone } from "@/data/mockData";
-import { ArrowRight, Compass, Hammer, Sparkles, BookOpen, Layers, Pencil, Eye, Check } from "lucide-react";
-
-const DISCIPLINES = [
-  "All",
-  "Architecture",
-  "Sculpture",
-  "Painting",
-  "Design",
-  "Major Projects",
-] as const;
+import { useGallery } from "@/context/GalleryContext";
 
 export default function JourneyPage() {
-  const [selectedDiscipline, setSelectedDiscipline] = useState<string>("All");
-  const [activeSketch, setActiveSketch] = useState<number>(0);
+  const { openEnquiry } = useGallery();
 
-  const filteredMilestones = JOURNEY_TIMELINE.filter((item) =>
-    selectedDiscipline === "All" ? true : item.discipline === selectedDiscipline
-  );
-
-  const sketches = [
+  const timelineMilestones = [
     {
-      title: "Plate 01: Diabase Monolith Sectional Tensions",
-      category: "Sculpture & Geometry",
-      image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1000&q=85",
-      notes: "Graphite on vellum. Studies for uncalibrated pivot line and counterweight bronze cap.",
+      year: "2018",
+      title: "The Inception & First Mountain Atelier",
+      location: "Larvik, Norway",
+      description: "Founded on the belief that contemporary culture needed a return to permanent, tactile materiality. The first alpine studio was established adjacent to ancient blue pearl granite quarries.",
+      highlight: "Extraction of the first 12-ton tectonic stone blocks",
     },
     {
-      title: "Plate 02: Engadin Pavilion Structural Elevation",
-      category: "Architecture",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85",
-      notes: "Tamped concrete towers framing negative voids toward mountain passes at 1,800m altitude.",
+      year: "2020",
+      title: "The Engadin Alpine Pavilion Commission",
+      location: "Graubünden, Switzerland",
+      description: "Completion of Cloud's landmark residential sanctuary, cantilevered at 1,800 meters. A manifesto of tamped earth, raw granite, and untreated larch timber joinery.",
+      highlight: "Winner of the Architectural Monograph Award",
     },
     {
-      title: "Plate 03: Kyoto Wood Kiln Thermal Dynamics",
-      category: "Porcelain & Process",
-      image: "https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&w=1000&q=85",
-      notes: "72-hour anagama reduction flame paths and natural wood-ash flux crystallization points.",
+      year: "2022",
+      title: "Foundry Guild & Lost-Wax Innovation",
+      location: "Turin, Italy",
+      description: "Forming exclusive long-term alliances with master bronze casters in northern Italy, pioneering direct 1,200°C bronze pours into natural diabase fissures.",
+      highlight: "Creation of the monumental Diabase & Bronze suite",
     },
     {
-      title: "Plate 04: Lost Wax Bronze Armature Fissures",
-      category: "Metal & Foundry",
-      image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=85",
-      notes: "Direct molten bronze casting channels into quarry stone fractures.",
+      year: "2024",
+      title: "International Salon & Auction Expansion",
+      location: "Kyoto & Zurich",
+      description: "Inauguration of Cloud's East Wing pavilion in Kyoto alongside the Zurich gallery hall, uniting Asian wood firing and European mineral painting under a unified curatorial banner.",
+      highlight: "72-hour Anagama kiln reduction archives",
+    },
+    {
+      year: "2026",
+      title: "Cloud Gallery Today: Global Physical Sanctuaries",
+      location: "International Salons",
+      description: "A worldwide network encompassing represented masters, curated high-end auction lots, documentary cinema on Cloud TV, and cross-disciplinary collaborations.",
+      highlight: "Full institutional catalogue & global consignment platform",
     },
   ];
 
   return (
     <div className="w-full bg-white text-black min-h-screen pb-32">
       {/* ========================================================
-          FULL-BLEED HERO IMAGE (SOTHEBY'S ABOUT / EDITORIAL STRUCTURE)
+          FULL-BLEED CINEMA HERO BANNER (SOTHEBY'S JOURNEY PLATFORM)
       ======================================================== */}
-      <section className="relative w-full h-[360px] sm:h-[460px] lg:h-[520px] bg-black overflow-hidden border-b border-[#E5E5E5]">
+      <section className="relative w-full h-[380px] sm:h-[460px] lg:h-[520px] bg-black overflow-hidden border-b border-[#E5E5E5]">
         <Image
           src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=2600&q=90"
           alt="Cloud Journey Monograph - Stone Sculpture in Architectural Space"
           fill
           priority
-          className="object-cover object-center brightness-[0.88] contrast-[1.05]"
+          className="object-cover object-center brightness-[0.85] contrast-[1.08]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-        <div className="absolute bottom-6 left-6 sm:left-12 text-white">
-          <span className="text-[10px] tracking-[0.3em] uppercase bg-black/75 backdrop-blur-xs px-3 py-1 border border-white/20 font-medium">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20" />
+
+        {/* Hero Top Badge */}
+        <div className="absolute top-6 left-6 sm:left-12">
+          <span className="text-[10px] tracking-[0.3em] uppercase bg-black/80 backdrop-blur-xs px-3.5 py-1.5 border border-white/25 text-white font-medium">
             MONOGRAPH & ARCHIVAL RETROSPECTIVE · 2018–2026
           </span>
         </div>
-      </section>
 
-      {/* ========================================================
-          1. ABOUT THE ARTIST & EDITORIAL MONOGRAPH HEADER
-      ======================================================== */}
-      <section className="border-b border-[#E5E5E5] bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-black font-semibold bg-[#FAFAFA] border border-[#E5E5E5] px-2.5 py-1">
-              CATALOGUE RAISONNÉ & RETROSPECTIVE MONOGRAPH
-            </span>
+        {/* Hero Bottom Title & Metadata */}
+        <div className="absolute bottom-8 left-6 sm:left-12 right-6 sm:right-12 text-white max-w-4xl space-y-3">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#CCCCCC]">
+            <span className="w-2 h-2 rounded-full bg-[#081757] border border-white/60" />
+            <span>CLOUD ORIGINS & FOUNDER ARCHIVE</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl text-black font-normal leading-tight max-w-5xl">
-            Cloud Journey: The Story of a Creative Life
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-tight text-white">
+            The Cloud Journey
           </h1>
-          <p className="text-xs sm:text-sm text-[#555555] max-w-3xl font-light leading-relaxed">
-            From deep stone quarry extractions in Larvik and Carrara to monumental timber-cast alpine pavilions in the Engadin Valley. An authoritative retrospective spanning architecture, monolithic sculpture, tectonic painting, and process archives.
+          <p className="font-merriweather text-xs sm:text-sm text-[#DDDDDD] font-light max-w-2xl leading-relaxed italic">
+            From deep stone quarry extractions in Larvik and Carrara to monumental timber-cast alpine pavilions in the Engadin Valley. The founding vision, master craftsmanship, and the story of how Cloud Gallery began.
           </p>
         </div>
       </section>
 
       {/* ========================================================
-          SECTION: ABOUT THE ARTIST (Biographical Monograph Profile)
+          STICKY SECTION JUMP NAVIGATION BAR
       ======================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-[#E5E5E5]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=85"
-                alt="Henrik Vestergaard in studio"
-                fill
-                className="object-cover grayscale contrast-125"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
-            </div>
-            <div className="absolute -bottom-4 right-4 bg-white border border-[#E5E5E5] px-4 py-2 text-center">
-              <span className="text-[9px] uppercase tracking-widest text-[#666666] font-semibold block">
-                FOUNDER & ARTIST-ARCHITECT
-              </span>
-              <span className="font-serif text-sm text-black">
-                HENRIK VESTERGAARD
-              </span>
-            </div>
+      <nav
+        aria-label="Journey Sections Navigation"
+        className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-[#888888] font-bold mr-2 hidden md:inline">
+              DIRECT SECTIONS:
+            </span>
+            <a
+              href="#how-cloud-started"
+              className="px-3.5 py-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] font-medium text-black hover:text-[#081757] hover:bg-neutral-100 border border-transparent hover:border-[#E5E5E5] transition-all whitespace-nowrap"
+            >
+              HOW CLOUD STARTED
+            </a>
+            <a
+              href="#about-mr-prasanna"
+              className="px-3.5 py-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] font-medium text-black hover:text-[#081757] hover:bg-neutral-100 border border-transparent hover:border-[#E5E5E5] transition-all whitespace-nowrap"
+            >
+              ABOUT MR PRASANNA
+            </a>
           </div>
 
-          <div className="lg:col-span-7 space-y-6">
-            <div className="space-y-2">
-              <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block">
-                ABOUT THE ARTIST & PHILOSOPHY
-              </span>
-              <h2 className="font-serif text-3xl sm:text-5xl text-black font-normal leading-snug">
-                Form Conceived as Silent Mass
-              </h2>
-            </div>
-
-            <blockquote className="font-serif text-xl sm:text-2xl text-black italic font-light border-l-2 border-black pl-4 py-1 leading-relaxed">
-              &ldquo;Architecture is frozen music; sculpture is tactile space where the unyielding density of stone speaks directly to human mortality.&rdquo;
-            </blockquote>
-
-            <p className="text-xs sm:text-sm text-[#555555] leading-relaxed font-light">
-              Trained at the Royal Danish Academy of Fine Arts in Copenhagen and the Swiss Federal Institute of Technology (ETH Zurich), Henrik Vestergaard founded Cloud Studio in 2018. Rejecting ephemeral commercial design, his practice unites monumental stone excavation, lost-wax bronze casting, and mineral pigments into enduring spatial environments.
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#E5E5E5] text-xs">
-              <div>
-                <span className="text-[9px] uppercase tracking-widest text-[#777777] block">EDUCATION</span>
-                <span className="font-medium text-black mt-0.5 block">ETH Zurich / KADK</span>
-              </div>
-              <div>
-                <span className="text-[9px] uppercase tracking-widest text-[#777777] block">RESIDENCIES</span>
-                <span className="font-medium text-black mt-0.5 block">Larvik, Carrara, Kyoto</span>
-              </div>
-              <div>
-                <span className="text-[9px] uppercase tracking-widest text-[#777777] block">MEDIUMS</span>
-                <span className="font-medium text-black mt-0.5 block">Diabase, Bronze, Flax</span>
-              </div>
-              <div>
-                <span className="text-[9px] uppercase tracking-widest text-[#777777] block">REPRESENTATION</span>
-                <span className="font-medium text-black mt-0.5 block">Cloud Gallery Zurich</span>
-              </div>
-            </div>
+          <div className="hidden lg:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[#666666] shrink-0 font-medium">
+            <span>FOUNDER MONOGRAPH</span>
+            <span>·</span>
+            <span>PERMANENT ARCHIVE</span>
           </div>
         </div>
-      </section>
+      </nav>
 
       {/* ========================================================
-          3. ARCHITECTURE: THE ENGADIN PAVILION RESIDENCE
+          MAIN CONTENT CONTAINER
       ======================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-[#E5E5E5]">
-        <div className="mb-10 pb-4 border-b border-black flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#666666] font-semibold block mb-1">
-              DISCIPLINE I · ARCHITECTURE
-            </span>
-            <h2 className="font-serif text-3xl sm:text-5xl text-black font-normal">
-              The Pavilion Residence (Engadin Valley)
-            </h2>
-          </div>
-          <span className="text-xs uppercase tracking-wider text-black font-semibold">
-            COMPLETED 2020 · SWITZERLAND
-          </span>
-        </div>
+      <div className="space-y-28 pt-16">
+        {/* ========================================================
+            SECTION 1: HOW CLOUD STARTED
+        ======================================================== */}
+        <section
+          id="how-cloud-started"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36"
+        >
+          {/* Section Header */}
+          <div className="border-b border-black pb-5 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#888888]">
+                  SECTION 01 / 02
+                </span>
+                <span className="h-2 w-px bg-[#CCCCCC]" />
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[#081757] font-semibold">
+                  THE ORIGIN ARCHIVES
+                </span>
+              </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-8 space-y-3">
-            <div className="relative aspect-[16/10] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85"
-                alt="The Pavilion Residence spatial photography"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 65vw"
-              />
-            </div>
-            <div className="flex justify-between text-[11px] text-[#666666] px-1">
-              <span>Plate 01: Cantilevered alpine winter terrace overlooking alpine passes</span>
-              <span className="italic">Photography by Jonas Lindström</span>
-            </div>
-          </div>
+              <h2 className="font-roboto font-bold text-3xl sm:text-4xl text-[#081757] tracking-tight">
+                HOW CLOUD STARTED
+              </h2>
 
-          <div className="lg:col-span-4 space-y-6">
-            <div className="p-6 bg-[#FAFAFA] border border-[#E5E5E5] space-y-3">
-              <h3 className="font-serif text-xl text-black italic">
-                Spatial & Structural Conception
-              </h3>
-              <p className="text-xs text-[#555555] leading-relaxed font-light">
-                Positioned 1,800 meters above sea level, the pavilion emerges directly from the granite bedrock. Three massive timber-formed concrete towers anchor the residence against alpine gales, framing cinematic voids toward mountain passes.
+              {/* Exact required copy */}
+              <p className="font-merriweather text-sm text-[#081757] font-semibold italic">
+                The story of how Cloud Gallery began. [Details to be added by Cloud Gallery]
+              </p>
+
+              <p className="text-xs sm:text-sm text-black max-w-2xl font-light leading-relaxed pt-1">
+                The foundational narrative, initial studio experiments, and curatorial principles that established Cloud Gallery as an international platform for monolithic art and architecture.
               </p>
             </div>
 
-            <div className="border border-[#E5E5E5] p-5 space-y-3 bg-white">
-              <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block">
-                TACTILE MATERIAL SPECIFICATION
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#777777] font-medium bg-[#FAFAFA] border border-[#E5E5E5] px-3 py-1.5">
+                ESTABLISHED 2018
               </span>
-              <ul className="text-xs text-[#555555] space-y-2">
-                <li className="flex items-start gap-2">
-                  <Check size={13} className="text-black mt-0.5 flex-shrink-0" />
-                  <span>Hand-raked Jura Travertine (cold jointed)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check size={13} className="text-black mt-0.5 flex-shrink-0" />
-                  <span>Charred Shou Sugi Ban Swiss Larch siding</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check size={13} className="text-black mt-0.5 flex-shrink-0" />
-                  <span>Brushed gunmetal & patinated bronze apertures</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check size={13} className="text-black mt-0.5 flex-shrink-0" />
-                  <span>Unbleached Belgian linen acoustic panels</span>
-                </li>
-              </ul>
+              <a
+                href="#how-cloud-started"
+                className="text-[10px] uppercase tracking-[0.2em] font-bold text-black hover:text-[#081757] transition-colors flex items-center gap-1"
+              >
+                <span>TOP</span>
+                <span>↑</span>
+              </a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ========================================================
-          4, 5, 6, 7. SCULPTURE, PAINTING, DESIGN & MAJOR PROJECTS (Grid Showcase)
-      ======================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-[#E5E5E5]">
-        <div className="mb-10 pb-4 border-b border-[#E5E5E5] flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#666666] font-semibold block mb-1">
-              DISCIPLINES & EXPEDITIONS
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-black">
-              Sculpture, Painting, Design & Major Projects
-            </h2>
-          </div>
-
-          {/* Discipline Filters */}
-          <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-1">
-            {DISCIPLINES.map((disc) => (
-              <button
-                key={disc}
-                onClick={() => setSelectedDiscipline(disc)}
-                className={`px-3 py-1 text-[10px] uppercase tracking-wider transition-all border ${
-                  selectedDiscipline === disc
-                    ? "bg-black text-white border-black font-medium"
-                    : "bg-[#FAFAFA] text-[#555555] hover:text-black border-[#E5E5E5]"
-                }`}
-              >
-                {disc}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Milestone Cards Stream */}
-        <div className="space-y-8">
-          {filteredMilestones.map((milestone) => (
-            <div
-              key={milestone.id}
-              className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10 p-6 sm:p-8 bg-white border border-[#E5E5E5] items-center hover:border-black transition-all"
-            >
-              <div className="md:col-span-3 space-y-1">
-                <span className="font-serif text-4xl sm:text-5xl text-black font-normal">
-                  {milestone.year}
-                </span>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#666666] font-semibold">
-                  {milestone.discipline} · {milestone.location}
-                </p>
-              </div>
-
-              <div className="md:col-span-5 space-y-2">
-                <h3 className="font-serif text-2xl text-black italic">
-                  {milestone.title}
+          {/* Story Narrative & Visual Columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="border-l-2 border-black pl-5 py-1">
+                <h3 className="font-serif text-2xl sm:text-3xl text-black leading-snug">
+                  Rejecting Decorative Triviality in Search of Permanence
                 </h3>
-                <p className="text-xs text-[#555555] leading-relaxed font-light">
-                  {milestone.description}
-                </p>
-                {milestone.specifications && (
-                  <div className="pt-2 flex flex-wrap gap-1.5">
-                    {milestone.specifications.map((spec, i) => (
-                      <span key={i} className="text-[9px] uppercase tracking-wider bg-[#FAFAFA] px-2 py-0.5 border border-[#E5E5E5] text-[#555555]">
-                        {spec}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
 
-              <div className="md:col-span-4 relative aspect-[16/10] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
+              <p className="font-merriweather text-xs sm:text-sm text-[#444444] font-light leading-relaxed italic">
+                The story of how Cloud Gallery began. [Details to be added by Cloud Gallery]
+              </p>
+
+              <p className="text-xs sm:text-sm text-[#555555] font-light leading-relaxed">
+                Cloud Gallery was born from a profound reaction against disposable contemporary trends. In an era dominated by fleeting digital surfaces and mass production, Cloud was conceived as an unyielding physical sanctuary—grounded in the raw weight of stone, the elemental fire of bronze foundries, and the slow quietude of natural wood and mineral pigments.
+              </p>
+
+              <p className="text-xs sm:text-sm text-[#555555] font-light leading-relaxed">
+                What began in 2018 as a series of direct studio dialogues between sculptors, stone masons, and alpine architects quickly expanded into a curated international institution. Today, Cloud operates across major European and Asian capitals, preserving age-old craftsmanship while driving monumental new commissions.
+              </p>
+
+              {/* Core Pillars */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[#E5E5E5]">
+                <div className="p-4 bg-[#FAFAFA] border border-[#E5E5E5] space-y-1.5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#081757] font-bold block">
+                    01. MATERIAL INTEGRITY
+                  </span>
+                  <p className="text-xs text-[#555555] font-light leading-relaxed">
+                    Uncompromising adherence to authentic natural mediums—diabase, bronze, travertine, and wild clay.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-[#FAFAFA] border border-[#E5E5E5] space-y-1.5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#081757] font-bold block">
+                    02. TIMELESS CRAFT
+                  </span>
+                  <p className="text-xs text-[#555555] font-light leading-relaxed">
+                    Centuries-old lost-wax casting and hand timber joinery executed without modern shortcuts.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-[#FAFAFA] border border-[#E5E5E5] space-y-1.5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#081757] font-bold block">
+                    03. SPATIAL WEIGHT
+                  </span>
+                  <p className="text-xs text-[#555555] font-light leading-relaxed">
+                    Artworks created not for mere decoration, but to command and transform architectural space.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Plate Column */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="relative aspect-[4/5] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
                 <Image
-                  src={milestone.image}
-                  alt={milestone.title}
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85"
+                  alt="Early architectural atelier and stone studies"
                   fill
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 30vw"
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                />
+                <div className="absolute bottom-3 left-3 bg-white px-2.5 py-1 text-[9px] uppercase tracking-widest font-semibold text-black border border-[#E5E5E5]">
+                  Archival Plate · Founding Atelier Studies
+                </div>
+              </div>
+              <p className="text-[11px] text-[#777777] italic leading-relaxed">
+                The story of how Cloud Gallery began. [Details to be added by Cloud Gallery] Historical photographic records from the initial stone studio and architectural pavilion models.
+              </p>
+            </div>
+          </div>
+
+          {/* Timeline Milestones */}
+          <div className="mt-16 pt-12 border-t border-[#E5E5E5] space-y-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#888888] font-bold block">
+                  CHRONOLOGICAL RECORD
+                </span>
+                <h3 className="font-serif text-2xl text-black">
+                  Key Milestones of the Cloud Journey
+                </h3>
+              </div>
+              <span className="text-xs text-[#777777] italic hidden sm:block">
+                2018 — Present Day
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {timelineMilestones.map((milestone) => (
+                <div
+                  key={milestone.year}
+                  className="p-6 bg-white border border-[#E5E5E5] hover:border-black transition-all space-y-3 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-serif text-3xl font-normal text-black">
+                        {milestone.year}
+                      </span>
+                      <span className="text-[9px] uppercase tracking-wider text-[#081757] font-semibold bg-[#FAFAFA] px-2 py-0.5 border border-[#E5E5E5]">
+                        {milestone.location}
+                      </span>
+                    </div>
+                    <h4 className="font-serif text-lg text-black">
+                      {milestone.title}
+                    </h4>
+                    <p className="text-xs text-[#666666] font-light leading-relaxed">
+                      {milestone.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-[#EEEEEE] text-[10px] uppercase tracking-wider text-[#081757] font-semibold">
+                    ✓ {milestone.highlight}
+                  </div>
+                </div>
+              ))}
+
+              {/* Curatorial Placeholder Card for Origins Expansion */}
+              <div className="p-6 bg-[#FAFAFA] border-2 border-dashed border-[#DDDDDD] flex flex-col justify-between hover:border-[#888888] transition-colors">
+                <div className="space-y-2">
+                  <span className="text-[9px] uppercase tracking-widest text-[#888888] font-bold block">
+                    ARCHIVE IN PROGRESS
+                  </span>
+                  <h4 className="font-serif text-lg text-black">
+                    Origins Ingestion
+                  </h4>
+                  <p className="font-merriweather text-xs text-[#081757] font-semibold italic pt-1">
+                    The story of how Cloud Gallery began. [Details to be added by Cloud Gallery]
+                  </p>
+                  <p className="text-xs text-[#777777] font-light leading-relaxed pt-1">
+                    Complete archival documentary recordings, founding sketches, and retrospective manuscripts are being assembled by the Curatorial Directorate.
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-[#E5E5E5]">
+                  <span className="text-[10px] uppercase tracking-wider text-[#888888]">
+                    Cloud Gallery Directorate
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            SECTION 2: ABOUT MR PRASANNA
+        ======================================================== */}
+        <section
+          id="about-mr-prasanna"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36"
+        >
+          {/* Section Header */}
+          <div className="border-b border-black pb-5 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#888888]">
+                  SECTION 02 / 02
+                </span>
+                <span className="h-2 w-px bg-[#CCCCCC]" />
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[#081757] font-semibold">
+                  FOUNDER MONOGRAPH
+                </span>
+              </div>
+
+              <h2 className="font-roboto font-bold text-3xl sm:text-4xl text-[#081757] tracking-tight">
+                ABOUT MR PRASANNA
+              </h2>
+
+              {/* Exact required copy */}
+              <p className="font-merriweather text-sm text-[#081757] font-semibold italic">
+                The founder, his vision and his work. [Details to be added by Cloud Gallery]
+              </p>
+
+              <p className="text-xs sm:text-sm text-black max-w-2xl font-light leading-relaxed pt-1">
+                The architectural philosophy, creative leadership, and lifelong studio dedication of Cloud Gallery founder Mr. Prasanna.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#777777] font-medium bg-[#FAFAFA] border border-[#E5E5E5] px-3 py-1.5">
+                FOUNDER & PRINCIPAL CURATOR
+              </span>
+              <a
+                href="#about-mr-prasanna"
+                className="text-[10px] uppercase tracking-[0.2em] font-bold text-black hover:text-[#081757] transition-colors flex items-center gap-1"
+              >
+                <span>TOP</span>
+                <span>↑</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Biographical Monograph Card */}
+          <div className="p-8 sm:p-12 bg-white border border-black grid grid-cols-1 lg:grid-cols-12 gap-10 items-center shadow-xs">
+            <div className="lg:col-span-5 relative">
+              <div className="relative aspect-[4/5] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=85"
+                  alt="Mr Prasanna in studio"
+                  fill
+                  className="object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  priority
                 />
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ========================================================
-          8. SKETCHES & IDEAS (Interactive Archival Studio Folio)
-      ======================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-[#E5E5E5]">
-        <div className="mb-10 pb-4 border-b border-black flex items-end justify-between">
-          <div>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#666666] font-semibold block mb-1">
-              ARCHIVAL FOLIO · SECTION 08
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-black">
-              Sketches & Ideas: The Analytical Folio
-            </h2>
-          </div>
-          <span className="text-xs uppercase tracking-wider text-[#666666] hidden sm:block">
-            4 Selected Monograph Plates
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Main Selected Sketch Large View */}
-          <div className="lg:col-span-8 space-y-3">
-            <div className="relative aspect-[16/10] bg-[#FAFAFA] border border-[#E5E5E5] overflow-hidden">
-              <Image
-                src={sketches[activeSketch].image}
-                alt={sketches[activeSketch].title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 65vw"
-              />
-              <div className="absolute top-4 left-4 bg-white border border-[#E5E5E5] px-3 py-1 text-[9px] uppercase tracking-widest font-semibold text-black">
-                {sketches[activeSketch].category}
+              <div className="absolute -bottom-4 right-4 bg-white border border-black px-4 py-2 text-center shadow-md">
+                <span className="text-[9px] uppercase tracking-widest text-[#081757] font-bold block">
+                  FOUNDER & VISIONARY
+                </span>
+                <span className="font-serif text-sm text-black font-semibold">
+                  MR PRASANNA
+                </span>
               </div>
             </div>
-            <div className="p-4 bg-[#FAFAFA] border border-[#E5E5E5]">
-              <h4 className="font-serif text-xl text-black italic">
-                {sketches[activeSketch].title}
-              </h4>
-              <p className="text-xs text-[#555555] mt-1 font-light">
-                {sketches[activeSketch].notes}
+
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-1.5">
+                <span className="text-[10px] tracking-[0.25em] uppercase text-[#081757] font-bold block">
+                  CREATIVE PHILOSOPHY & LEADERSHIP
+                </span>
+                <h3 className="font-serif text-3xl sm:text-5xl text-black font-normal leading-tight">
+                  Mr. Prasanna
+                </h3>
+                <p className="font-merriweather text-xs text-[#081757] font-semibold italic">
+                  The founder, his vision and his work. [Details to be added by Cloud Gallery]
+                </p>
+              </div>
+
+              <blockquote className="font-serif text-xl sm:text-2xl text-black italic font-light border-l-2 border-black pl-5 py-1 leading-relaxed">
+                &ldquo;Architecture is frozen music; sculpture is tactile space where the unyielding density of stone speaks directly to human mortality.&rdquo;
+              </blockquote>
+
+              <p className="text-xs sm:text-sm text-[#555555] leading-relaxed font-light">
+                Guiding Cloud Gallery with an unwavering dedication to timeless materials, master craftsmanship, and world-class curatorial standards uniting monumental stone excavation, lost-wax bronze casting, and mineral pigments into enduring spatial environments.
               </p>
+
+              <p className="text-xs sm:text-sm text-[#555555] leading-relaxed font-light">
+                Mr. Prasanna has spent decades traversing remote European and Asian quarries, cultivating direct partnerships with historic foundries and master artisans. His personal monographs and site-specific architectural installations have been recognized across leading international architectural and sculptural institutions.
+              </p>
+
+              {/* Curatorial Specifications Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#E5E5E5] text-xs">
+                <div>
+                  <span className="text-[9px] uppercase tracking-widest text-[#777777] font-semibold block">
+                    FOUNDING DISCIPLINE
+                  </span>
+                  <span className="font-serif text-sm text-black mt-0.5 block">
+                    Architecture & Stone
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[9px] uppercase tracking-widest text-[#777777] font-semibold block">
+                    FIELD RESIDENCIES
+                  </span>
+                  <span className="font-serif text-sm text-black mt-0.5 block">
+                    Larvik, Carrara, Kyoto
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[9px] uppercase tracking-widest text-[#777777] font-semibold block">
+                    CORE MEDIUMS
+                  </span>
+                  <span className="font-serif text-sm text-black mt-0.5 block">
+                    Diabase, Bronze, Timber
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[9px] uppercase tracking-widest text-[#777777] font-semibold block">
+                    CURATORIAL OFFICE
+                  </span>
+                  <span className="font-serif text-sm text-black mt-0.5 block">
+                    Cloud Gallery Zurich
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-[#E5E5E5]">
+                <p className="font-merriweather text-xs text-[#777777] italic">
+                  The founder, his vision and his work. [Details to be added by Cloud Gallery]
+                </p>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => openEnquiry(null)}
+                    className="px-6 py-2.5 bg-black hover:bg-[#081757] text-white text-xs uppercase tracking-widest font-medium transition-colors cursor-pointer"
+                  >
+                    Inquire with Founder Office →
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Sketchbook Selector Thumbnails */}
-          <div className="lg:col-span-4 space-y-3">
-            {sketches.map((sketch, idx) => (
-              <div
-                key={idx}
-                onClick={() => setActiveSketch(idx)}
-                className={`p-3 border transition-all cursor-pointer flex items-center gap-3 ${
-                  activeSketch === idx
-                    ? "border-black bg-[#FAFAFA] shadow-xs"
-                    : "border-[#E5E5E5] bg-white hover:border-[#888888]"
-                }`}
-              >
-                <div className="relative w-16 h-12 bg-[#EEEEEE] flex-shrink-0 overflow-hidden border border-[#E5E5E5]">
-                  <Image
-                    src={sketch.image}
-                    alt={sketch.title}
-                    fill
-                    className="object-cover"
-                    sizes="60px"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="text-[9px] uppercase tracking-wider text-[#777777] block">
-                    {sketch.category}
-                  </span>
-                  <p className="font-serif text-sm text-black truncate italic">
-                    {sketch.title}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================
-          9. STUDIO / PROCESS (Quarry Extractions & Kiln Archives)
-      ======================================================== */}
-      <section className="bg-[#FAFAFA] border-b border-[#E5E5E5] py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-black font-semibold block">
-              PROCESS & FIELD DOCUMENTATION
+          {/* Clean Placeholder for Founder Archive */}
+          <div className="mt-8 border-2 border-dashed border-[#DDDDDD] bg-[#FAFAFA] p-8 text-center space-y-3 hover:border-[#888888] transition-colors">
+            <span className="text-[9px] uppercase tracking-[0.25em] text-[#888888] font-bold block">
+              PERMANENT FOUNDER DOSSIER
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl text-black font-normal">
-              The Studio & Process Archives
-            </h2>
-            <p className="text-xs sm:text-sm text-[#555555] font-light leading-relaxed">
-              Raw mineral extraction at 1,400 meters, lost-wax furnace trials at 1,200°C, and 72-hour reduction firings in Kyoto.
+            <h4 className="font-serif text-xl text-black">
+              Founder Monograph & Retrospective Ingestion
+            </h4>
+            <p className="font-merriweather text-xs text-[#081757] font-semibold italic max-w-xl mx-auto">
+              The founder, his vision and his work. [Details to be added by Cloud Gallery]
+            </p>
+            <p className="text-xs text-[#777777] max-w-lg mx-auto font-light leading-relaxed">
+              In-depth essays, architectural sketches, and personal monograph chapters are continuously documented for the Cloud permanent archive.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: "Diabase Quarry Extraction",
-                tag: "Larvik, Norway",
-                img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=85",
-                caption: "Diamond-wire precision sawing of 12-ton tectonic stone blocks.",
-              },
-              {
-                title: "Foundry Crucible Pour (1,200°C)",
-                tag: "Turin Foundry Guild",
-                img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=85",
-                caption: "Lost-wax silica investment casting for skeletal bronze armatures.",
-              },
-              {
-                title: "Anagama Ash Glaze Cooling",
-                tag: "Higashiyama, Kyoto",
-                img: "https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&w=800&q=85",
-                caption: "Red pine wood-ash melting over unglazed stoneware porcelain foot.",
-              },
-              {
-                title: "Gotthard Mineral Slate Grinding",
-                tag: "Zurich North Atelier",
-                img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=85",
-                caption: "Granite mortar formulation of light-absorbing mineral temperas.",
-              },
-            ].map((item, idx) => (
-              <div key={idx} className="group bg-white border border-[#E5E5E5] hover:border-black transition-all flex flex-col justify-between">
-                <div className="relative aspect-[3/4] bg-[#FAFAFA] overflow-hidden border-b border-[#E5E5E5]">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                  />
-                  <div className="absolute top-3 left-3 bg-white px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold text-black border border-[#E5E5E5]">
-                    {item.tag}
-                  </div>
-                </div>
-                <div className="p-4 space-y-1 bg-white">
-                  <h4 className="font-serif text-base text-black group-hover:underline">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11px] text-[#666666] leading-relaxed font-light">
-                    {item.caption}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
