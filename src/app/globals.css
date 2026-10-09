@@ -106,24 +106,19 @@ p:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not
   font-weight: 300;
 }
 
-/* Navigation items default to Black */
-nav a:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not([class*="text-blue"]),
-nav button:not(.text-white):not([class*="text-white"]):not([class*="text-[#081757]"]):not([class*="text-blue"]) {
-  color: #000000;
-}
-
 /* --------------------------------------------------------
    3. WHITE TEXT ONLY OVER INTENTIONAL DARK / BLACK BLOCKS
       OR IMAGE OVERLAYS
 -------------------------------------------------------- */
 .text-white,
+span.text-white,
+p.text-white,
+a.text-white,
+button.text-white,
 h1.text-white,
 h2.text-white,
 h3.text-white,
-h4.text-white,
-p.text-white,
-span.text-white,
-a.text-white {
+h4.text-white {
   color: #FFFFFF !important;
 }
 

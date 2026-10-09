@@ -46,10 +46,12 @@ export default function Navbar() {
     };
   }, [activeDropdown]);
 
-  // Close dropdown whenever pathname changes
-  useEffect(() => {
+  // Close dropdown whenever pathname changes without cascading render in effect
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setActiveDropdown(null);
-  }, [pathname]);
+  }
 
   const toggleShopCategory = (catId: string) => {
     setExpandedShopCategories((prev) => ({
@@ -89,22 +91,22 @@ export default function Navbar() {
       label: "PROJECTS",
       href: "/projects",
       bgClass: "bg-[#081757] hover:bg-[#061245]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
+      textClass: "text-white",
+      arrowClass: "text-white",
       borderClass: "border border-[#081757]",
     },
     {
       label: "SHOP",
       href: "/shop",
-      bgClass: "bg-[#000000] hover:bg-[#1a1a1a]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
-      borderClass: "border border-[#000000]",
+      bgClass: "bg-black hover:bg-[#1a1a1a]",
+      textClass: "text-white",
+      arrowClass: "text-white",
+      borderClass: "border border-black",
     },
     {
       label: "JOURNEY",
       href: "/journey",
-      bgClass: "bg-[#FFFFFF] hover:bg-neutral-50",
+      bgClass: "bg-white hover:bg-neutral-50",
       textClass: "text-[#081757]",
       arrowClass: "text-[#081757]",
       borderClass: "border border-black",
@@ -113,22 +115,22 @@ export default function Navbar() {
       label: "ARTISTS",
       href: "/artists",
       bgClass: "bg-[#081757] hover:bg-[#061245]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
+      textClass: "text-white",
+      arrowClass: "text-white",
       borderClass: "border border-[#081757]",
     },
     {
       label: "COLLABORATIONS",
       href: "/collaborations",
-      bgClass: "bg-[#000000] hover:bg-[#1a1a1a]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
-      borderClass: "border border-[#000000]",
+      bgClass: "bg-black hover:bg-[#1a1a1a]",
+      textClass: "text-white",
+      arrowClass: "text-white",
+      borderClass: "border border-black",
     },
     {
       label: "CLOUD TV",
       href: "/cloud-tv",
-      bgClass: "bg-[#FFFFFF] hover:bg-neutral-50",
+      bgClass: "bg-white hover:bg-neutral-50",
       textClass: "text-[#081757]",
       arrowClass: "text-[#081757]",
       borderClass: "border border-black",
@@ -137,17 +139,17 @@ export default function Navbar() {
       label: "EVENTS",
       href: "/events",
       bgClass: "bg-[#081757] hover:bg-[#061245]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
+      textClass: "text-white",
+      arrowClass: "text-white",
       borderClass: "border border-[#081757]",
     },
     {
       label: "OPEN CALL",
       href: "/open-call",
-      bgClass: "bg-[#000000] hover:bg-[#1a1a1a]",
-      textClass: "text-[#FFFFFF]",
-      arrowClass: "text-[#FFFFFF]",
-      borderClass: "border border-[#000000]",
+      bgClass: "bg-black hover:bg-[#1a1a1a]",
+      textClass: "text-white",
+      arrowClass: "text-white",
+      borderClass: "border border-black",
     },
   ];
 
@@ -410,9 +412,9 @@ export default function Navbar() {
                         aria-expanded={isProjectsOpen}
                         className={`w-full flex items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4 font-roboto font-bold text-sm sm:text-base tracking-[0.1em] uppercase transition-all duration-150 group shadow-xs ${item.bgClass} ${item.textClass} ${item.borderClass}`}
                       >
-                        <span className="font-roboto font-bold">{item.label}</span>
+                        <span className={`font-roboto font-bold ${item.textClass}`}>{item.label}</span>
                         <span
-                          className={`${item.arrowClass} font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-200 ${
+                          className={`font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-200 ${item.arrowClass} ${
                             isProjectsOpen ? "rotate-90" : ""
                           }`}
                           aria-hidden="true"
@@ -433,8 +435,8 @@ export default function Navbar() {
                               }}
                               className="flex items-center justify-between px-4 py-2.5 font-roboto font-bold text-xs sm:text-sm tracking-wider uppercase text-[#081757] hover:bg-white hover:translate-x-1 transition-all rounded-xs"
                             >
-                              <span>{sub.label}</span>
-                              <span className="text-xs text-[#081757] opacity-60">→</span>
+                              <span className="font-roboto font-bold text-[#081757]">{sub.label}</span>
+                              <span className="text-xs text-[#081757] font-bold">→</span>
                             </Link>
                           ))}
                         </div>
@@ -451,9 +453,9 @@ export default function Navbar() {
                       onClick={() => setMobileShopView("shop")}
                       className={`w-full flex items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4 font-roboto font-bold text-sm sm:text-base tracking-[0.1em] uppercase transition-all duration-150 group shadow-xs ${item.bgClass} ${item.textClass} ${item.borderClass}`}
                     >
-                      <span className="font-roboto font-bold">{item.label}</span>
+                      <span className={`font-roboto font-bold ${item.textClass}`}>{item.label}</span>
                       <span
-                        className={`${item.arrowClass} font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-150 group-hover:translate-x-1.5`}
+                        className={`font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-150 group-hover:translate-x-1.5 ${item.arrowClass}`}
                         aria-hidden="true"
                       >
                         →
@@ -461,9 +463,6 @@ export default function Navbar() {
                     </button>
                   );
                 }
-
-
-
 
                 return (
                   <Link
@@ -475,9 +474,9 @@ export default function Navbar() {
                     }}
                     className={`w-full flex items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4 font-roboto font-bold text-sm sm:text-base tracking-[0.1em] uppercase transition-all duration-150 group shadow-xs ${item.bgClass} ${item.textClass} ${item.borderClass}`}
                   >
-                    <span className="font-roboto font-bold">{item.label}</span>
+                    <span className={`font-roboto font-bold ${item.textClass}`}>{item.label}</span>
                     <span
-                      className={`${item.arrowClass} font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-150 group-hover:translate-x-1.5`}
+                      className={`font-roboto font-bold text-lg sm:text-xl leading-none select-none transition-transform duration-150 group-hover:translate-x-1.5 ${item.arrowClass}`}
                       aria-hidden="true"
                     >
                       →
@@ -518,7 +517,7 @@ export default function Navbar() {
               </div>
 
               <div className="pb-1 border-b border-[#EEEEEE]">
-                <span className="text-[10px] uppercase tracking-[0.25em] text-[#888888] font-bold block">
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#081757] font-bold block">
                   SHOP BY DEPARTMENT
                 </span>
               </div>
@@ -540,7 +539,7 @@ export default function Navbar() {
                         aria-expanded={isExpanded}
                         className="w-full flex items-center justify-between px-4 py-3.5 text-xs font-roboto font-bold uppercase tracking-wider text-black bg-[#FAFAFA] hover:bg-neutral-100 active:bg-neutral-200 transition-colors cursor-pointer select-none text-left"
                       >
-                        <span className="font-roboto font-bold">{cat.name}</span>
+                        <span className="font-roboto font-bold text-black">{cat.name}</span>
                         <ChevronDown
                           size={16}
                           strokeWidth={2.2}
@@ -564,8 +563,8 @@ export default function Navbar() {
                               }}
                               className="w-full flex items-center justify-between px-3 py-1.5 font-roboto font-bold text-[11px] uppercase tracking-wider text-[#081757] hover:underline"
                             >
-                              <span>ALL {cat.name}</span>
-                              <span className="text-xs">→</span>
+                              <span className="font-roboto font-bold text-[#081757]">ALL {cat.name}</span>
+                              <span className="text-xs text-[#081757] font-bold">→</span>
                             </Link>
                           </div>
 
@@ -574,7 +573,7 @@ export default function Navbar() {
                             <div className="p-3 space-y-3">
                               {cat.groups.map((grp) => (
                                 <div key={grp.groupName} className="space-y-1">
-                                  <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#888888] px-2 block">
+                                  <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#081757] px-2 block">
                                     {grp.groupName}
                                   </span>
                                   <div className="flex flex-col space-y-0.5 pl-2 border-l-2 border-[#EEEEEE]">
@@ -587,10 +586,10 @@ export default function Navbar() {
                                           setMobileShopView("root");
                                           setExpandedShopCategories({});
                                         }}
-                                        className="w-full flex items-center justify-between px-3 py-2 font-roboto font-medium text-xs uppercase tracking-wider text-[#081757] hover:bg-neutral-50 rounded-xs transition-colors group/sub"
+                                        className="w-full flex items-center justify-between px-3 py-2 font-roboto font-bold text-xs uppercase tracking-wider text-[#081757] hover:bg-neutral-50 rounded-xs transition-colors group/sub"
                                       >
-                                        <span>{subItem}</span>
-                                        <span className="text-xs text-[#081757] opacity-40 group-hover/sub:opacity-100 transition-opacity">
+                                        <span className="font-roboto font-bold text-[#081757]">{subItem}</span>
+                                        <span className="text-xs text-[#081757] opacity-60 group-hover/sub:opacity-100 transition-opacity font-bold">
                                           →
                                         </span>
                                       </Link>
@@ -613,10 +612,10 @@ export default function Navbar() {
                                     setMobileShopView("root");
                                     setExpandedShopCategories({});
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 font-roboto font-medium text-xs uppercase tracking-wider text-[#081757] hover:bg-neutral-50 rounded-xs transition-colors group/sub"
+                                  className="w-full flex items-center justify-between px-3 py-2 font-roboto font-bold text-xs uppercase tracking-wider text-[#081757] hover:bg-neutral-50 rounded-xs transition-colors group/sub"
                                 >
-                                  <span>{subItem}</span>
-                                  <span className="text-xs text-[#081757] opacity-40 group-hover/sub:opacity-100 transition-opacity">
+                                  <span className="font-roboto font-bold text-[#081757]">{subItem}</span>
+                                  <span className="text-xs text-[#081757] opacity-60 group-hover/sub:opacity-100 transition-opacity font-bold">
                                     →
                                   </span>
                                 </Link>
