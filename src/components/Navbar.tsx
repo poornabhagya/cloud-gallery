@@ -46,12 +46,10 @@ export default function Navbar() {
     };
   }, [activeDropdown]);
 
-  // Close dropdown whenever pathname changes without cascading render in effect
-  const [prevPathname, setPrevPathname] = useState(pathname);
-  if (prevPathname !== pathname) {
-    setPrevPathname(pathname);
+  // Close dropdown whenever pathname changes
+  useEffect(() => {
     setActiveDropdown(null);
-  }
+  }, [pathname]);
 
   const toggleShopCategory = (catId: string) => {
     setExpandedShopCategories((prev) => ({

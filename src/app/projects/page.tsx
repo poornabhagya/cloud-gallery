@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useGallery } from "@/context/GalleryContext";
 import { MapPin, Calendar, Sparkles } from "lucide-react";
 
-const CATEGORIES = [
+export const CATEGORIES = [
   "ALL",
   "ARCHITECTURE",
   "INTERIOR DESIGN",
@@ -15,9 +15,9 @@ const CATEGORIES = [
   "LIGHTING",
 ] as const;
 
-type ProjectCategory = (typeof CATEGORIES)[number];
+export type ProjectCategory = (typeof CATEGORIES)[number];
 
-interface ProjectItem {
+export interface ProjectItem {
   id: string;
   title: string;
   category: Exclude<ProjectCategory, "ALL">;
@@ -28,7 +28,7 @@ interface ProjectItem {
   specs: string[];
 }
 
-const PROJECTS_DATA: ProjectItem[] = [
+export const PROJECTS_DATA: ProjectItem[] = [
   // 1. ARCHITECTURE
   {
     id: "proj-arch-1",
