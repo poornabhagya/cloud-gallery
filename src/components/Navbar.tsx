@@ -21,21 +21,23 @@ export default function Navbar() {
     setActiveDropdown((prev) => (prev === menu ? null : menu));
   };
 
-  // Close dropdown on click outside or escape key
+  // Close dropdown or mobile menu on click outside or escape key
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
         setActiveDropdown(null);
+        setIsMobileMenuOpen(false);
       }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setActiveDropdown(null);
+        setIsMobileMenuOpen(false);
       }
     };
 
-    if (activeDropdown) {
+    if (activeDropdown || isMobileMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("keydown", handleKeyDown);
     }
@@ -44,17 +46,13 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeDropdown]);
+  }, [activeDropdown, isMobileMenuOpen]);
 
-  // Close dropdown whenever pathname changes safely without cascading render
+  // Close dropdown and mobile menu whenever user navigates to a new route
   useEffect(() => {
-    if (activeDropdown !== null) {
-      const timeoutId = setTimeout(() => {
-        setActiveDropdown(null);
-      }, 0);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [pathname, activeDropdown]);
+    setActiveDropdown(null);
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const toggleShopCategory = (catId: string) => {
     setExpandedShopCategories((prev) => ({
@@ -157,7 +155,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5] transition-all">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-white border-b border-[#E5E5E5] transition-all">
       {/* ========================================================
           MAIN NAVIGATION BAR (Unified Single Nav Standard)
           Logo + Unified Primary Links
@@ -189,8 +187,10 @@ export default function Navbar() {
                 <div key={link.href} className="relative py-2">
                   <button
                     type="button"
+                    onMouseDown={(e) => e.stopPropagation()}
                     onClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
                       toggleDropdown("projects");
                     }}
                     aria-expanded={isDropdownOpen}
@@ -214,29 +214,29 @@ export default function Navbar() {
                   </button>
 
                   {/* Desktop Click Dropdown Menu (Sotheby's Aesthetic) */}
-                  <div
-                    className={`absolute top-[calc(100%-2px)] left-0 w-60 bg-white border border-[#E5E5E5] shadow-xl py-2 px-1.5 transition-all duration-200 ease-out z-50 ${
-                      isDropdownOpen
-                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                        : "opacity-0 invisible translate-y-1 pointer-events-none"
-                    }`}
-                  >
-                    <div className="flex flex-col space-y-0.5">
-                      {projectsSubLinks.map((sub) => (
-                        <Link
-                          key={sub.label}
-                          href={sub.href}
-                          onClick={() => setActiveDropdown(null)}
-                          className="px-3.5 py-2.5 text-[10px] tracking-[0.2em] uppercase font-medium text-black hover:text-[#081757] hover:bg-[#FAFAFA] transition-all flex items-center justify-between group/sub"
-                        >
-                          <span>{sub.label}</span>
-                          <span className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-[#081757] text-[10px] font-bold">
-                            →
-                          </span>
-                        </Link>
-                      ))}
+                  {isDropdownOpen && (
+                    <div
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute top-full left-0 mt-0.5 w-60 bg-white border border-[#E5E5E5] shadow-2xl py-2 px-1.5 z-50 animate-fade-in"
+                    >
+                      <div className="flex flex-col space-y-0.5">
+                        {projectsSubLinks.map((sub) => (
+                          <Link
+                            key={sub.label}
+                            href={sub.href}
+                            onClick={() => setActiveDropdown(null)}
+                            className="px-3.5 py-2.5 text-[10px] tracking-[0.2em] uppercase font-medium text-black hover:text-[#081757] hover:bg-[#FAFAFA] transition-all flex items-center justify-between group/sub"
+                          >
+                            <span>{sub.label}</span>
+                            <span className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-[#081757] text-[10px] font-bold">
+                              →
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             }
@@ -249,8 +249,10 @@ export default function Navbar() {
                 <div key={link.href} className="relative py-2">
                   <button
                     type="button"
+                    onMouseDown={(e) => e.stopPropagation()}
                     onClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
                       toggleDropdown("shop");
                     }}
                     aria-expanded={isDropdownOpen}
@@ -274,88 +276,88 @@ export default function Navbar() {
                   </button>
 
                   {/* SOTHEBY'S STYLE FULL-WIDTH DESKTOP MEGA MENU */}
-                  <div
-                    className={`fixed left-0 right-0 top-[80px] w-full bg-white border-y border-[#E5E5E5] shadow-2xl transition-all duration-200 ease-out z-50 ${
-                      isDropdownOpen
-                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                        : "opacity-0 invisible translate-y-1 pointer-events-none"
-                    }`}
-                  >
-                    <div className="absolute -top-3 left-0 right-0 h-3" />
-                    <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-                      <div className="grid grid-cols-6 gap-6 xl:gap-8 border-b border-[#E5E5E5] pb-8">
-                        {SHOP_CATEGORY_TREE.map((cat) => (
-                          <div key={cat.id} className="space-y-3">
-                            <Link
-                              href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                              onClick={() => setActiveDropdown(null)}
-                              className="text-[11px] uppercase tracking-[0.2em] font-bold text-black pb-1.5 border-b border-[#E5E5E5] block hover:text-[#081757] transition-colors"
-                            >
-                              {cat.name}
-                            </Link>
+                  {isDropdownOpen && (
+                    <div
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
+                      className="fixed left-0 right-0 top-20 w-full bg-white border-y border-[#E5E5E5] shadow-2xl z-50 animate-fade-in"
+                    >
+                      <div className="absolute -top-3 left-0 right-0 h-3" />
+                      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+                        <div className="grid grid-cols-6 gap-6 xl:gap-8 border-b border-[#E5E5E5] pb-8">
+                          {SHOP_CATEGORY_TREE.map((cat) => (
+                            <div key={cat.id} className="space-y-3">
+                              <Link
+                                href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                                onClick={() => setActiveDropdown(null)}
+                                className="text-[11px] uppercase tracking-[0.2em] font-bold text-black pb-1.5 border-b border-[#E5E5E5] block hover:text-[#081757] transition-colors"
+                              >
+                                {cat.name}
+                              </Link>
 
-                            {/* Standard Subcategories List */}
-                            {cat.subCategories && (
-                              <ul className="space-y-1.5">
-                                {cat.subCategories.map((item) => (
-                                  <li key={item}>
-                                    <Link
-                                      href={`/shop?category=${encodeURIComponent(item)}`}
-                                      onClick={() => setActiveDropdown(null)}
-                                      className="text-[10px] uppercase tracking-[0.15em] text-black hover:text-[#081757] hover:translate-x-0.5 transition-all block font-medium"
-                                    >
-                                      {item}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
+                              {/* Standard Subcategories List */}
+                              {cat.subCategories && (
+                                <ul className="space-y-1.5">
+                                  {cat.subCategories.map((item) => (
+                                    <li key={item}>
+                                      <Link
+                                        href={`/shop?category=${encodeURIComponent(item)}`}
+                                        onClick={() => setActiveDropdown(null)}
+                                        className="text-[10px] uppercase tracking-[0.15em] text-black hover:text-[#081757] hover:translate-x-0.5 transition-all block font-medium"
+                                      >
+                                        {item}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
 
-                            {/* Sub-Groups (e.g. for CLOTHING: Ladies, Men's Wear) */}
-                            {cat.groups && (
-                              <div className="space-y-3 pt-1">
-                                {cat.groups.map((group) => (
-                                  <div key={group.groupName} className="space-y-1">
-                                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#081757] block">
-                                      {group.groupName}
-                                    </span>
-                                    <ul className="space-y-1 pl-1.5 border-l border-[#EEEEEE]">
-                                      {group.items.map((item) => (
-                                        <li key={item}>
-                                          <Link
-                                            href={`/shop?category=${encodeURIComponent(item)}`}
-                                            onClick={() => setActiveDropdown(null)}
-                                            className="text-[10px] uppercase tracking-[0.15em] text-black hover:text-[#081757] hover:translate-x-0.5 transition-all block font-medium"
-                                          >
-                                            {item}
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                              {/* Sub-Groups (e.g. for CLOTHING: Ladies, Men's Wear) */}
+                              {cat.groups && (
+                                <div className="space-y-3 pt-1">
+                                  {cat.groups.map((group) => (
+                                    <div key={group.groupName} className="space-y-1">
+                                      <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#081757] block">
+                                        {group.groupName}
+                                      </span>
+                                      <ul className="space-y-1 pl-1.5 border-l border-[#EEEEEE]">
+                                        {group.items.map((item) => (
+                                          <li key={item}>
+                                            <Link
+                                              href={`/shop?category=${encodeURIComponent(item)}`}
+                                              onClick={() => setActiveDropdown(null)}
+                                              className="text-[10px] uppercase tracking-[0.15em] text-black hover:text-[#081757] hover:translate-x-0.5 transition-all block font-medium"
+                                            >
+                                              {item}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
 
-                      {/* Bottom Action Bar */}
-                      <div className="pt-4 flex items-center justify-between text-[11px]">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-black font-medium">
-                          CURATED HIGH-END E-COMMERCE · WORLDWIDE INSURED TRANSIT
-                        </span>
-                        <Link
-                          href="/shop"
-                          onClick={() => setActiveDropdown(null)}
-                          className="font-bold uppercase tracking-[0.25em] text-black hover:text-[#081757] flex items-center gap-1.5 transition-colors group/all"
-                        >
-                          <span>SHOP ALL</span>
-                          <span className="transition-transform duration-150 group-hover/all:translate-x-1">→</span>
-                        </Link>
+                        {/* Bottom Action Bar */}
+                        <div className="pt-4 flex items-center justify-between text-[11px]">
+                          <span className="text-[10px] uppercase tracking-[0.25em] text-black font-medium">
+                            CURATED HIGH-END E-COMMERCE · WORLDWIDE INSURED TRANSIT
+                          </span>
+                          <Link
+                            href="/shop"
+                            onClick={() => setActiveDropdown(null)}
+                            className="font-bold uppercase tracking-[0.25em] text-black hover:text-[#081757] flex items-center gap-1.5 transition-colors group/all"
+                          >
+                            <span>SHOP ALL</span>
+                            <span className="transition-transform duration-150 group-hover/all:translate-x-1">→</span>
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             }
@@ -385,9 +387,13 @@ export default function Navbar() {
         {/* Mobile menu trigger */}
         <div className="flex items-center lg:hidden">
           <button
-            onClick={() => {
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               setActiveDropdown(null);
-              setIsMobileMenuOpen(!isMobileMenuOpen);
+              setIsMobileMenuOpen((prev) => !prev);
             }}
             aria-label="Toggle Navigation Menu"
             className="p-2 text-black cursor-pointer"
@@ -401,7 +407,11 @@ export default function Navbar() {
           MOBILE NAVIGATION OVERLAY (Client Design Reference)
       ======================================================== */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-[#E5E5E5] px-4 py-4 sm:px-6 sm:py-6 shadow-2xl max-h-[calc(100dvh-80px)] overflow-y-auto animate-fade-in">
+        <div
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          className="lg:hidden fixed left-0 right-0 top-20 z-50 bg-white border-b border-[#E5E5E5] px-4 py-4 sm:px-6 sm:py-6 shadow-2xl max-h-[calc(100dvh-80px)] overflow-y-auto animate-fade-in pointer-events-auto"
+        >
           {mobileShopView === "root" ? (
             /* MAIN MENU VIEW */
             <nav className="w-full flex flex-col space-y-2 sm:space-y-2.5">

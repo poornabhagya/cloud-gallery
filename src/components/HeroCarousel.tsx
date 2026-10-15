@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CarouselSlide {
   id: string;
@@ -63,142 +62,122 @@ export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const nextSlide = useCallback(() => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
   }, []);
 
-  const prevSlide = useCallback(() => {
+  const handlePrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   }, []);
 
-  const goToSlide = (index: number) => {
+  const handleSelect = useCallback((index: number) => {
     setCurrentIndex(index);
-  };
+  }, []);
 
-  // Auto-play logic: swaps images every 5 seconds
+  // Auto-play logic: swaps images every 5 seconds.
+  // Resets timer whenever user manually clicks a slide (currentIndex change) or pauses on hover.
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(() => {
-      nextSlide();
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
+    return () => clearInterval(timer);
+  }, [currentIndex, isPaused]);
 
   return (
     <section className="w-full bg-white py-4 sm:py-6 lg:py-8 border-b border-[#E5E5E5]">
-      {/* Sotheby's Framed Container with visible white space on left and right */}
+      {/* Framed Container with visible architectural margin */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className="group relative w-full h-[500px] sm:h-[580px] lg:h-[660px] bg-black overflow-hidden select-none shadow-sm"
+          className="group relative w-full h-[500px] sm:h-[580px] lg:h-[660px] bg-black overflow-hidden shadow-sm"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           aria-roledescription="carousel"
-          aria-label="Sotheby's Auction & Exhibition Hero Highlights"
+          aria-label="Cloud Gallery Exhibition Highlights"
         >
-          {/* Background Images with smooth fade transition */}
+          {/* Background Images with smooth fade transition & subtle zoom */}
           {SLIDES.map((slide, index) => {
             const isActive = index === currentIndex;
             return (
               <div
                 key={slide.id}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                  isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
+                className="absolute inset-0 pointer-events-none transition-opacity duration-700 ease-in-out"
+                style={{
+                  opacity: isActive ? 1 : 0,
+                  zIndex: isActive ? 10 : 0,
+                }}
               >
                 <Image
                   src={slide.image}
                   alt={slide.title}
                   fill
                   priority={index === 0}
-                  className={`object-cover object-center brightness-[0.88] contrast-[1.05] transition-transform duration-[6000ms] ease-out ${
+                  loading={index === 0 ? "eager" : "eager"}
+                  className={`object-cover object-center brightness-[0.95] contrast-[1.02] transition-transform duration-[6000ms] ease-out pointer-events-none ${
                     isActive ? "scale-105" : "scale-100"
                   }`}
                   sizes="(max-width: 1400px) 100vw, 1400px"
                 />
-                {/* Subtle Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/30" />
+                {/* Subtle soft gradient protection for UI controls */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/25 pointer-events-none" />
               </div>
             );
           })}
 
-          {/* Top Left Badge */}
-          <div className="absolute top-6 left-6 sm:left-10 z-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/75 backdrop-blur-xs border border-white/20 text-white text-[9px] uppercase tracking-[0.25em] font-semibold">
+          {/* Minimalist Top Left Tag */}
+          <div className="absolute top-6 left-6 sm:left-10 z-30 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-xs border border-white/20 text-white text-[9px] uppercase tracking-[0.25em] font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
               {SLIDES[currentIndex].lotInfo}
             </div>
           </div>
 
           {/* ========================================================
-              HOVER-ONLY ELEGANT NAVIGATION ARROWS
-              Hidden by default, visible on group hover without heavy square box
+              ELEGANT NAVIGATION ARROWS
+              Fully clickable, z-50, prominent and responsive
           ======================================================== */}
           <button
-            onClick={prevSlide}
+            type="button"
+            onClick={handlePrev}
             aria-label="Previous Slide"
-            className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300 absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/30 hover:bg-black/60 backdrop-blur-xs transition-all drop-shadow-md"
+            className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-50 pointer-events-auto cursor-pointer w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white bg-black/40 hover:bg-black/75 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-lg backdrop-blur-xs select-none"
           >
-            <ChevronLeft size={28} strokeWidth={1.5} />
+            <ChevronLeft size={26} strokeWidth={2} className="pointer-events-none" />
           </button>
 
           <button
-            onClick={nextSlide}
+            type="button"
+            onClick={handleNext}
             aria-label="Next Slide"
-            className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300 absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/30 hover:bg-black/60 backdrop-blur-xs transition-all drop-shadow-md"
+            className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-50 pointer-events-auto cursor-pointer w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white bg-black/40 hover:bg-black/75 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-lg backdrop-blur-xs select-none"
           >
-            <ChevronRight size={28} strokeWidth={1.5} />
+            <ChevronRight size={26} strokeWidth={2} className="pointer-events-none" />
           </button>
 
           {/* ========================================================
-              SOTHEBY'S STYLE OVERLAY CONTENT BOX
-              Positioned at bottom right corner overlapping the image
+              BOTTOM PROGRESS DOTS (Centered, Large Hit Area, z-50)
           ======================================================== */}
-          <div className="absolute bottom-6 right-4 sm:right-8 sm:bottom-8 lg:right-10 lg:bottom-10 z-20 max-w-lg w-[calc(100%-2rem)] sm:w-auto">
-            <div className="bg-[#002B49]/95 sm:bg-[#002B49]/90 backdrop-blur-md text-white p-6 sm:p-8 lg:p-10 border border-white/15 shadow-2xl space-y-4 transition-all duration-500">
-              <div className="space-y-1.5">
-                <span className="text-[10px] tracking-[0.28em] uppercase text-[#E0E0E0] font-medium block">
-                  {SLIDES[currentIndex].category}
-                </span>
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-tight">
-                  {SLIDES[currentIndex].title}
-                </h2>
-              </div>
-
-              <p className="text-xs text-[#CCCCCC] leading-relaxed font-light line-clamp-3">
-                {SLIDES[currentIndex].description}
-              </p>
-
-              <div className="pt-2 border-t border-white/20">
-                <Link
-                  href={SLIDES[currentIndex].linkHref}
-                  className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] font-semibold text-white hover:text-[#D4AF37] transition-colors group/link"
-                >
-                  <span>{SLIDES[currentIndex].linkText}</span>
-                  <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* ========================================================
-              NAVIGATION DOTS (Bottom Center of the Slider)
-          ======================================================== */}
-          <div className="absolute bottom-6 left-6 sm:left-10 lg:left-1/2 lg:-translate-x-1/2 z-20 flex items-center space-x-2.5">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
             {SLIDES.map((_, idx) => {
               const isActive = idx === currentIndex;
               return (
                 <button
                   key={idx}
-                  onClick={() => goToSlide(idx)}
+                  type="button"
+                  onClick={() => handleSelect(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`transition-all duration-300 ${
-                    isActive
-                      ? "w-8 h-1.5 bg-white"
-                      : "w-2.5 h-1.5 bg-white/40 hover:bg-white/70"
-                  }`}
-                />
+                  className="group/dot p-2 pointer-events-auto cursor-pointer focus:outline-hidden"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? "w-8 bg-white shadow-xs"
+                        : "w-2.5 bg-white/40 group-hover/dot:bg-white/80"
+                    }`}
+                  />
+                </button>
               );
             })}
           </div>
